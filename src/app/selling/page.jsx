@@ -121,6 +121,7 @@ export default function Selling() {
                   pImg={product.pImg}
                   pName={product.pName || "Product Name"}
                   pPrice={product.pPrice || "Price"}
+                  pLink={false}
                 />
               </div>
             </div>

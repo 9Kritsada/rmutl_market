@@ -2,6 +2,7 @@ import { connectMongoDB } from "@/lib/mongodb";
 import Product, { productPostZodSchema } from "@/models/product";
 import { NextResponse } from "next/server";
 
+// GET /api/product
 export async function GET(req, res) {
   connectMongoDB();
 
@@ -13,6 +14,7 @@ export async function GET(req, res) {
   });
 }
 
+// POST /api/product
 export async function POST(req, res) {
   connectMongoDB();
 

@@ -69,9 +69,11 @@ export default function Home() {
               {products.map((product) => (
                 <Card
                   key={product._id}
+                  pID={product._id}
                   pImg={product.image}
                   pName={product.name}
                   pPrice={product.price}
+                  pLink={true}
                 />
               ))}
             </>

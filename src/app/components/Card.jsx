@@ -1,4 +1,4 @@
-export default function Card({pImg, pName, pPrice}) {
+export default function Card({ pID, pImg, pName, pPrice, pLink }) {
   return (
     <>
       <div className="">
@@ -9,10 +9,17 @@ export default function Card({pImg, pName, pPrice}) {
             className="h-full aspect-square object-cover object-center"
           />
         </div>
-        <a href="/product" className="flex items-center font-medium px-4 py-2 w-full bg-[#513300] text-[#ffffff] justify-between">
-          <p>{pName}</p>
-          <p>฿{pPrice}</p>
-        </a>
+        {pLink ? (
+          <a href={`/product/${pID}`} className="flex items-center font-medium px-4 py-3 w-full bg-[#513300] text-[#ffffff] justify-between">
+            <p className="line-clamp-1">{pName}</p>
+            <p>฿{pPrice}</p>
+          </a>
+        ) : (
+          <a className="flex items-center font-medium px-4 py-3 w-full bg-[#513300] text-[#ffffff] justify-between">
+            <p className="max-w-[80%] line-clamp-1">{pName}</p>
+            <p>฿{pPrice}</p>
+          </a>
+        )}
       </div>
     </>
   );
