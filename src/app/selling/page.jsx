@@ -76,6 +76,17 @@ export default function Selling() {
                 />
               </div>
               <div>
+                <label htmlFor="pPrice" className="block mb-1">ราคา</label>
+                <input
+                  type="number"
+                  name="pPrice"
+                  id="pPrice"
+                  className="w-full border border-gray-300 rounded-md px-3 py-2"
+                  value={product.pPrice}
+                  onChange={handleChange}
+                />
+              </div>
+              <div>
                 <label htmlFor="pImg" className="block mb-1">รูปสินค้า</label>
                 <input
                   type="text"
@@ -95,17 +106,6 @@ export default function Selling() {
                   value={product.pDetails}
                   onChange={handleChange}
                 ></textarea>
-              </div>
-              <div>
-                <label htmlFor="pPrice" className="block mb-1">ราคา</label>
-                <input
-                  type="number"
-                  name="pPrice"
-                  id="pPrice"
-                  className="w-full border border-gray-300 rounded-md px-3 py-2"
-                  value={product.pPrice}
-                  onChange={handleChange}
-                />
               </div>
               <div className="flex justify-end pt-5">
                 <input
