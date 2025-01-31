@@ -1,21 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Kanit&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --background: #EBEBEB;
+  --foreground: #404165;
+  --rmutl-color: #513300;
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Kanit", serif;
+}
+
+header {
+  @apply h-24 px-32 py-5 flex justify-between items-center bg-[#ffffff];
+}
+
+footer {
+  @apply h-52 px-32 py-12 flex bg-[--rmutl-color] text-[#ffffff] space-x-10;
+}
+
+button {
+  @apply flex items-center font-medium space-x-2;
+}
+
+main {
+  @apply min-h-screen;
+}
+
+input[type="text"],
+input[type="number"],
+textarea {
+  @apply px-3 py-2 border border-gray-300 rounded-md;
 }
