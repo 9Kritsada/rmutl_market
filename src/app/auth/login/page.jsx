@@ -53,7 +53,7 @@ export default function Login() {
 
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-[--background]">
+    <div className="fixed inset-0 flex items-center justify-center bg-[--background] p-10">
       <form
         method="post"
         className="bg-[#ffffff] p-10 rounded-md drop-shadow-md space-y-4 w-96"
