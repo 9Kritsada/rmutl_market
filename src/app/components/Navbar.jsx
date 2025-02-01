@@ -1,20 +1,66 @@
+"use client"
+
+import { useEffect, useState } from "react";
+import useUserStore from "@/app/store/useUserStore";
+import Cookies from "js-cookie";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 
 export default function Navbar() {
+  const [login, setLogin] = useState(false)
+
+  const user = useUserStore((state) => state.user);
+  const logout = useUserStore((state) => state.logout);
+
+  const [dropdown, setDropdown] = useState(false)
+
+  useEffect(() => {
+    const email = Cookies.get("email");
+    if (!email) {
+      logout();
+    }
+  }, []);
+
+  const toggleDropdown = () => {
+    setDropdown((prev) => !prev);
+  };
+
   return (
     <>
-      <header>
-        <img src="rmutl_logo.png" alt="" className="h-full" />
+      <header className="text-[--foreground]">
+        <a href="/" className="h-full"><img src="/rmutl_logo.png" alt="" className="h-full" /></a>
         <ul className="flex space-x-10 font-medium">
           <li><a href="/">HOME</a></li>
-          <li><a href="about">ABOUT</a></li>
-          <li><a href="selling">SELLING</a></li>
+          <li><a href="/about">ABOUT</a></li>
+          <li><a href="/selling">SELLING</a></li>
         </ul>
-        <button className="border-2 rounded-md px-4 py-2">
-          <p>LOGIN</p>
-          <FontAwesomeIcon icon={faArrowRight} className="w-3 h-auto"/>
-        </button>
+        {!user ? (
+          <a href="/auth/login" className="flex items-center space-x-2 border-2 rounded-md px-4 py-2">
+            <p>LOGIN</p>
+            <FontAwesomeIcon icon={faArrowRight} className="w-3 h-auto" />
+          </a>
+        ) : (
+          <>
+            <div className="relative">
+              <button
+                className="flex space-x-2 border-2 rounded-md px-4 py-2"
+                onClick={toggleDropdown}
+              >
+                {user.fname}
+              </button>
+              {dropdown && (
+                <ul className="absolute right-0 mt-2 w-48 bg-white border rounded-md shadow-lg">
+                  <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+                    <a href="/profile">PROFILE</a>
+                  </li>
+                  <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer" onClick={logout}>
+                    LOGOUT
+                  </li>
+                </ul>
+              )}
+            </div>
+          </>
+        )}
       </header>
     </>
   );
