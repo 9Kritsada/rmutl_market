@@ -1,11 +1,32 @@
 "use client"
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useParams } from "next/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faX } from "@fortawesome/free-solid-svg-icons";
 
 export default function Product() {
+  const { id } = useParams();
+  const [product, setProduct] = useState({});
   const [popup, setPopup] = useState(false);
+
+  useEffect(() => {
+    fetch(`/api/product/${id}`, {
+      method: "GET",
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Failed to fetch user");
+        }
+        return res.json();
+      })
+      .then((data) => {
+        setProduct(data.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      })
+  }, []);
 
   return (
     <>
@@ -13,7 +34,7 @@ export default function Product() {
         <div className="flex">
           <div className="w-2/3 flex justify-center h-screen p-20">
             <img
-              src="https://images.pexels.com/photos/1563356/pexels-photo-1563356.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+              src={product.image}
               alt=""
               className="h-[500px] aspect-square object-cover object-center"
             />
@@ -25,12 +46,17 @@ export default function Product() {
               <p>BACK</p>
             </button>
             <div className="space-y-3">
-              <h1 className="text-2xl font-bold">หนังสือ</h1>
+              <h1 className="text-2xl font-bold">{product.name}</h1>
               <div>ผู้ขาย : นายชาย กล้า</div>
               <div>เรียนอยู่ : วิศวกรรมศาสตร์</div>
-              <div>รายละเอียด : is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</div>
+              <div>รายละเอียด : {product.description}</div>
             </div>
-            <button onClick={() => setPopup(true)} className="bg-[#212121] w-full text-[#ffffff] flex items-center justify-center p-5 text-2xl rounded-md">฿100</button>
+            <button
+              onClick={() => setPopup(true)}
+              className="bg-[#212121] w-full text-[#ffffff] flex items-center justify-center p-5 text-2xl rounded-md"
+            >
+              ฿{new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(product.price)}
+            </button>
             <hr />
           </div>
         </div>
