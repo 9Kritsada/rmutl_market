@@ -37,7 +37,8 @@ export default function Sold() {
     }
   }, [loading, user, router]);
 
-  const email = decrypt(Cookies.get("email"));
+  const encryptedEmail = Cookies.get("email");
+  const email = encryptedEmail ? decrypt(encryptedEmail) : null;
   useEffect(() => {
     const fetchProducts = async () => {
       try {
