@@ -1,15 +1,16 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Card from "../components/Card";
+import Card from "../../../components/Card";
 import Cookies from "js-cookie";
-import { decrypt } from "../utils/encryption";
-import useUserStore from "../store/useUserStore";
-import { useRouter } from "next/navigation";
+import { decrypt } from "../../../utils/encryption";
+import useUserStore from "../../../store/useUserStore";
+import { useParams, useRouter } from "next/navigation";
 
-export default function Selling() {
+export default function Edit() {
   const router = useRouter();
 
+  const { id } = useParams();
   const { user, initializeUser, logout } = useUserStore();
 
   useEffect(() => {
@@ -23,14 +24,44 @@ export default function Selling() {
     }
   }, []);
 
-  const [product, setProduct] = useState({
-    pName: "",
-    pDetails: "",
-    pPrice: "",
-    pImg: "https://cdn.pixabay.com/photo/2014/06/03/19/38/board-361516_1280.jpg",
-    pOwner: Cookies.get("email"),
-    pType: "",
-  });
+  const [product, setProduct] = useState({});
+  const [productOwner, setProductOwner] = useState({});
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const res = await fetch(`/api/product/${id}`, { method: "GET" });
+        if (!res.ok) {
+          if (res.status === 404) {
+            alert("Product not found!");
+          } else {
+            throw new Error("Failed to fetch product");
+          }
+          router.push("/"); // Redirect กลับหน้าแรก
+          return;
+        }
+        const data = await res.json();
+        setProduct(data.data);
+
+        if (data.data?.email) {
+          const checkRes = await fetch(
+            `/api/check?email=${encodeURIComponent(data.data.email)}`,
+            {
+              method: "GET",
+            }
+          );
+          if (!checkRes.ok) throw new Error("Failed to fetch email check");
+          const checkData = await checkRes.json();
+          setProductOwner(checkData.data);
+        }
+      } catch (err) {
+        console.error(err);
+        alert("An error occurred while fetching product data.");
+      }
+    };
+
+    fetchProduct();
+  }, [id, router]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -40,8 +71,8 @@ export default function Selling() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!product.pName || !product.pPrice) {
-      alert("Please fill out all fields.");
+    if (!product.name || !product.price || !product.image || !product.type) {
+      alert("Please fill out all required fields.");
       return;
     }
 
@@ -51,40 +82,32 @@ export default function Selling() {
     }
 
     try {
-      const response = await fetch("/api/product", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+      const res = await fetch(`/api/user/product/`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          name: product.pName,
-          price: parseFloat(product.pPrice), // แปลงให้เป็น Number
-          image: product.pImg,
-          details: product.pDetails,
-          email: decrypt(product.pOwner),
-          type: product.pType,
-          status: "กำลังขาย",
+          productID: id,
+          email: decrypt(Cookies.get("email")),
+          updates: {
+            name: product.name,
+            price: product.price,
+            image: product.image,
+            details: product.details,
+            type: product.type,
+          },
         }),
       });
 
-      if (response.ok) {
-        alert("Product submitted successfully!");
-        setProduct({
-          pName: "",
-          pDetails: "",
-          pPrice: "",
-          pImg: "https://cdn.pixabay.com/photo/2014/06/03/19/38/board-361516_1280.jpg",
-        });
-      } else {
-        const errorData = await response.json(); // ดู Error Message
-        console.log("Error response:", errorData);
-        alert(
-          `Failed to submit product: ${errorData.message || "Unknown error"}`
-        );
+      if (!res.ok) {
+        const errorData = await response.json();
+        console.log(errorData);
       }
-    } catch (error) {
-      console.log("Error submitting product:", error);
-      alert("An error occurred while submitting the product.");
+
+      alert("Product updated successfully!");
+      router.push("/profile/history/sold");
+    } catch (err) {
+      console.error(err);
+      alert("An error occurred while updating the product.");
     }
   };
 
@@ -92,7 +115,7 @@ export default function Selling() {
     <>
       <main>
         <div className="my-20 px-32">
-          <h1 className="text-center text-3xl">SELLING</h1>
+          <h1 className="text-center text-3xl">EDIT</h1>
           <div className="grid grid-cols-2 py-10">
             <form className="px-20 space-y-3" onSubmit={handleSubmit}>
               <div>
@@ -101,51 +124,51 @@ export default function Selling() {
                 </label>
                 <input
                   type="text"
-                  name="pName"
-                  id="pName"
+                  name="name"
+                  id="name"
                   className="w-full border border-gray-300 rounded-md px-3 py-2"
-                  value={product.pName}
+                  defaultValue={product.name || ""}
                   onChange={handleChange}
                   required
                 />
               </div>
               <div>
-                <label htmlFor="pPrice" className="block mb-1">
+                <label htmlFor="price" className="block mb-1">
                   ราคา
                 </label>
                 <input
                   type="number"
-                  name="pPrice"
-                  id="pPrice"
+                  name="price"
+                  id="price"
                   className="w-full border border-gray-300 rounded-md px-3 py-2"
-                  value={product.pPrice}
+                  defaultValue={product.price || ""}
                   onChange={handleChange}
                   required
                 />
               </div>
               <div>
-                <label htmlFor="pImg" className="block mb-1">
+                <label htmlFor="image" className="block mb-1">
                   รูปสินค้า
                 </label>
                 <input
                   type="text"
-                  name="pImg"
-                  id="pImg"
+                  name="image"
+                  id="image"
                   className="w-full border border-gray-300 rounded-md px-3 py-2"
-                  value={product.pImg}
+                  defaultValue={product.image || ""}
                   onChange={handleChange}
                   required
                 />
               </div>
               <div>
-                <label htmlFor="pType" className="block mb-1">
+                <label htmlFor="type" className="block mb-1">
                   ประเภทสินค้า
                 </label>
                 <select
-                  name="pType"
-                  id="pType"
+                  name="type"
+                  id="type"
                   className="w-full"
-                  value={product.pType}
+                  value={product.type}
                   onChange={handleChange}
                   required
                 >
@@ -159,14 +182,14 @@ export default function Selling() {
                 </select>
               </div>
               <div>
-                <label htmlFor="pDetails" className="block mb-1">
+                <label htmlFor="details" className="block mb-1">
                   รายละเอียดสินค้า
                 </label>
                 <textarea
-                  name="pDetails"
-                  id="pDetails"
+                  name="details"
+                  id="details"
                   className="w-full border border-gray-300 rounded-md px-3 py-2 h-36"
-                  value={product.pDetails}
+                  defaultValue={product.details || ""}
                   onChange={handleChange}
                 ></textarea>
               </div>
@@ -181,9 +204,9 @@ export default function Selling() {
             <div className="flex items-center justify-center">
               <div className="w-96">
                 <Card
-                  pImg={product.pImg}
-                  pName={product.pName || "Product Name"}
-                  pPrice={product.pPrice || "Price"}
+                  pImg={product.image || "https://via.placeholder.com/150"}
+                  pName={product.name || "Product Name"}
+                  pPrice={product.price || "Price"}
                   pLink={false}
                 />
               </div>

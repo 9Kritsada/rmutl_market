@@ -1,4 +1,3 @@
-import bcrypt from 'bcrypt';
 import { connectMongoDB } from "@/lib/mongodb";
 import User, { userPostZodSchema } from "@/models/user";
 import { NextResponse } from "next/server";
@@ -15,41 +14,38 @@ export async function GET(req, res) {
   });
 }
 
-// POST /api/user
-export async function POST(req, res) {
+// PUT /api/user
+export async function PUT(req) {
   connectMongoDB();
 
-  const body = await req.json();
+  try {
+    const { fname, lname, faculty, email } = await req.json(); // อ่านข้อมูลจาก body ของ request
+    const userId = req.nextUrl.searchParams.get("id"); // ใช้ query params สำหรับ id ผู้ใช้
 
-  const parsedData = userPostZodSchema.safeParse(body);
-  if (!parsedData.success) {
-    return NextResponse.json(
-      {
-        message: parsedData.error.errors,
+    const updatedUser = await User.findOneAndUpdate(
+      { _id: userId },
+      { fname, lname, faculty, email },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return NextResponse.json({ message: "User not found" }, { status: 404 });
+    }
+
+    return NextResponse.json({
+      message: "User updated successfully",
+      data: {
+        userId: updatedUser._id,
+        fname: updatedUser.fname,
+        lname: updatedUser.lname,
+        email: updatedUser.email,
+        faculty: updatedUser.faculty,
       },
-      {
-        status: 400,
-      }
+    });
+  } catch (error) {
+    return NextResponse.json(
+      { message: "Error updating user", error: error.message },
+      { status: 500 }
     );
   }
-
-  const { email } = parsedData.data;
-
-  const existingUser = await User.findOne({ email });
-  if (existingUser) {
-    return NextResponse.json(
-      {
-        message: "Username already exists",
-      },
-      {
-        status: 400,
-      }
-    );
-  }
-
-  const newUser = await User.create(parsedData.data);
-  return NextResponse.json({
-    message: "success",
-    data: newUser,
-  });
 }

@@ -1,32 +1,93 @@
 "use client"
 
 import { useState, useEffect } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faX } from "@fortawesome/free-solid-svg-icons";
+import useUserStore from "@/app/store/useUserStore";
 
 export default function Product() {
+  const { user } = useUserStore();
+
+  const router = useRouter();
+
   const { id } = useParams();
   const [product, setProduct] = useState({});
+  const [productOwner, setProductOwner] = useState({});
   const [popup, setPopup] = useState(false);
+  const [contactInfo, setContactInfo] = useState("");
 
   useEffect(() => {
-    fetch(`/api/product/${id}`, {
-      method: "GET",
-    })
-      .then((res) => {
+    const fetchProduct = async () => {
+      try {
+        // Fetch product by ID
+        const res = await fetch(`/api/product/${id}`, {
+          method: "GET",
+        });
+
         if (!res.ok) {
-          throw new Error("Failed to fetch user");
+          throw new Error("Failed to fetch product");
         }
-        return res.json();
-      })
-      .then((data) => {
+
+        const data = await res.json();
         setProduct(data.data);
-      })
-      .catch((err) => {
+
+        // Fetch additional check based on product email
+        if (data.data?.email) {
+          const checkRes = await fetch(`/api/check?email=${encodeURIComponent(data.data.email)}`, {
+            method: "GET",
+          });
+
+          if (!checkRes.ok) {
+            throw new Error("Failed to fetch email check");
+          }
+
+          const checkData = await checkRes.json();
+          setProductOwner(checkData.data)
+        }
+      } catch (err) {
         console.error(err);
-      })
-  }, []);
+      }
+    };
+
+    fetchProduct();
+  }, [id]); // Include `id` in the dependency array
+
+  const handlePopup = () => {
+    if (!user) {
+      router.push("/auth/login");
+      return;
+    }
+    setPopup(true);
+  };
+
+  const sendContactInfo = async (contactInfo) => {
+    try {
+      const response = await fetch("http://localhost:3000/api/buy/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          productID: product._id, // ใช้ productID จาก product ที่โหลดมา
+          email: user.email, // ใช้ email ของผู้ใช้ที่ล็อกอินอยู่
+          message: contactInfo, // ข้อความจาก input
+        }),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log("Purchase request sent successfully:", result);
+        setPopup(false); // ปิด popup หลังการส่ง
+      } else {
+        const errorData = await response.json();
+        console.error("Failed to send purchase request:", errorData);
+      }
+    } catch (err) {
+      console.error("Error occurred while sending purchase request:", err);
+    }
+  };
+
 
   return (
     <>
@@ -46,13 +107,26 @@ export default function Product() {
               <p>BACK</p>
             </button>
             <div className="space-y-3">
-              <h1 className="text-2xl font-bold">{product.name}</h1>
-              <div>ผู้ขาย : นายชาย กล้า</div>
-              <div>เรียนอยู่ : วิศวกรรมศาสตร์</div>
-              <div>รายละเอียด : {product.description}</div>
+              <div>
+                <p className="text-[#A0A0A0] text-sm">
+                  {new Date(product.updatedAt).toLocaleString("th-TH", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    second: "2-digit",
+                  })}
+                  <span> น.</span>
+                </p>
+                <h1 className="text-2xl font-bold">{product.name}</h1>
+              </div>
+              <div>ผู้ขาย : {productOwner.fname} {productOwner.lname}</div>
+              <div>เรียนอยู่ : {productOwner.faculty}</div>
+              <div>รายละเอียด : {product.details}</div>
             </div>
             <button
-              onClick={() => setPopup(true)}
+              onClick={handlePopup}
               className="bg-[#212121] w-full text-[#ffffff] flex items-center justify-center p-5 text-2xl rounded-md"
             >
               ฿{new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(product.price)}
@@ -74,9 +148,19 @@ export default function Product() {
               <h1 className="text-2xl font-bold">ต้องการซื้อ</h1>
               <div className="space-y-1">
                 <h1>ส่งข้อมูลติดต่อผู้ขาย</h1>
-                <input type="text" className="border p-2 w-full" placeholder="Line: lineid, Tel:08888888888" />
+                <input
+                  type="text"
+                  className="border p-2 w-full"
+                  placeholder="Line: lineid, Tel:08888888888"
+                  onChange={(e) => setContactInfo(e.target.value)} // บันทึกข้อมูล input
+                />
               </div>
-              <button onClick={() => setPopup(false)} className="px-4 py-2 rounded-md bg-[#976829] text-white w-full flex items-center justify-center">ส่งข้อมูล</button>
+              <button
+                onClick={() => sendContactInfo(contactInfo)} // เรียกใช้ฟังก์ชันส่งข้อมูล
+                className="px-4 py-2 rounded-md bg-[#976829] text-white w-full flex items-center justify-center"
+              >
+                ส่งข้อมูล
+              </button>
             </div>
           </div>
         </div>
