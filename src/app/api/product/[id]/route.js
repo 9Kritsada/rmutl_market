@@ -3,8 +3,10 @@ import Product from "@/models/product";
 import { NextResponse } from "next/server";
 
 // GET /api/product/:id
-export async function GET(req, { params }) {
+export async function GET(req, context) {
   connectMongoDB();
+
+  const params = await context.params; // Await the `params` object
   const { id } = params;
 
   try {

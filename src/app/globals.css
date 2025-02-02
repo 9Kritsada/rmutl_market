@@ -1,11 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Kanit&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Kanit&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --background: #EBEBEB;
+  --background: #ebebeb;
   --foreground: #404165;
   --rmutl-color: #513300;
 }
@@ -39,4 +39,8 @@ input[type="password"],
 select,
 textarea {
   @apply px-3 py-2 border border-gray-300 rounded-md;
+}
+
+th {
+  @apply font-normal;
 }

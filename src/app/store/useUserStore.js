@@ -1,14 +1,37 @@
 import { create } from "zustand";
 
 const useUserStore = create((set) => ({
-  user: JSON.parse(localStorage.getItem("user")) || null,
+  user: null,
   setUser: (userData) => {
-    localStorage.setItem("user", JSON.stringify(userData));
+    if (typeof window !== "undefined") {
+      try {
+        localStorage.setItem("user", JSON.stringify(userData));
+      } catch (error) {
+        console.error("Failed to save user to localStorage:", error);
+      }
+    }
     set({ user: userData });
   },
   logout: () => {
-    localStorage.removeItem("user");
+    if (typeof window !== "undefined") {
+      try {
+        localStorage.removeItem("user");
+      } catch (error) {
+        console.error("Failed to remove user from localStorage:", error);
+      }
+    }
     set({ user: null });
+  },
+  initializeUser: () => {
+    if (typeof window !== "undefined") {
+      try {
+        const storedUser = JSON.parse(localStorage.getItem("user"));
+        set({ user: storedUser || null });
+      } catch (error) {
+        console.error("Failed to parse user from localStorage:", error);
+        set({ user: null });
+      }
+    }
   },
 }));
 

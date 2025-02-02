@@ -1,9 +1,9 @@
 "use client";
 
-import { encrypt } from "@/app/utils/encryption";
-import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
 export default function Register() {
   const router = useRouter();
@@ -36,13 +36,11 @@ export default function Register() {
         });
 
         if (response.ok) {
-          const data = await response.json();
           setErrorMessage("");
           router.push("/auth/login");
         } else {
           const errorData = await response.json();
           setErrorMessage(errorData.message[0].message);
-          console.log(errorData.message);
         }
       } catch (e) {
         setErrorMessage(`An error occurred: ${e.message}`);
@@ -50,7 +48,6 @@ export default function Register() {
     } else {
       setErrorMessage("Password not match");
     }
-
   };
 
   return (
@@ -60,6 +57,10 @@ export default function Register() {
         className="bg-[#ffffff] p-10 rounded-md drop-shadow-md space-y-4 w-[500px]"
         onSubmit={handleSubmit}
       >
+        <a href="/" className="flex text-[#A0A0A0] text-sm space-x-1">
+          <FontAwesomeIcon icon={faArrowLeft} className="w-3 h-auto" />
+          <p>หน้าหลัก</p>
+        </a>
         <h1 className="text-center text-3xl">สมัครสมาชิก</h1>
         <div>
           <label htmlFor="fname">ชื่อ</label>
@@ -70,6 +71,7 @@ export default function Register() {
             className="w-full"
             value={register.fname}
             onChange={handleChange}
+            required
           />
         </div>
         <div>
@@ -81,16 +83,30 @@ export default function Register() {
             className="w-full"
             value={register.lname}
             onChange={handleChange}
+            required
           />
         </div>
         <div>
           <label htmlFor="faculty">คณะ</label>
-          <select name="faculty" id="faculty" className="w-full" value={register.faculty} onChange={handleChange}>
+          <select
+            name="faculty"
+            id="faculty"
+            className="w-full"
+            value={register.faculty}
+            onChange={handleChange}
+            required
+          >
             <option disabled></option>
-            <option value="บริหารธุรกิจและศิลปศาสตร์">บริหารธุรกิจและศิลปศาสตร์</option>
-            <option value="วิทยาศาสตร์และเทคโนโลยีการเกษตร">วิทยาศาสตร์และเทคโนโลยีการเกษตร</option>
+            <option value="บริหารธุรกิจและศิลปศาสตร์">
+              บริหารธุรกิจและศิลปศาสตร์
+            </option>
+            <option value="วิทยาศาสตร์และเทคโนโลยีการเกษตร">
+              วิทยาศาสตร์และเทคโนโลยีการเกษตร
+            </option>
             <option value="วิศวกรรมศาสตร์">วิศวกรรมศาสตร์</option>
-            <option value="ศิลปกรรมกรรมและสถาปัตยกรรมศาสตร์">ศิลปกรรมกรรมและสถาปัตยกรรมศาสตร์</option>
+            <option value="ศิลปกรรมกรรมและสถาปัตยกรรมศาสตร์">
+              ศิลปกรรมกรรมและสถาปัตยกรรมศาสตร์
+            </option>
           </select>
         </div>
         <div>
@@ -102,28 +118,31 @@ export default function Register() {
             className="w-full"
             value={register.email}
             onChange={handleChange}
+            required
           />
         </div>
         <div>
           <label htmlFor="password">Password</label>
           <input
-            type="text"
+            type="password"
             name="password"
             id="password"
             className="w-full"
             value={register.password}
             onChange={handleChange}
+            required
           />
         </div>
         <div>
           <label htmlFor="confirmPassword">Confirm Password</label>
           <input
-            type="text"
+            type="password"
             name="confirmPassword"
             id="confirmPassword"
             className="w-full"
             value={register.confirmPassword}
             onChange={handleChange}
+            required
           />
         </div>
         {errorMessage && (
@@ -137,7 +156,10 @@ export default function Register() {
         />
         <div className="text-sm opacity-80">
           <p className="text-center">
-            มีบัญชีแล้ว! <a href="/auth/login" className="text-[#976829] underline">เข้าสู่ระบบ</a>
+            มีบัญชีแล้ว!{" "}
+            <a href="/auth/login" className="text-[#976829] underline">
+              เข้าสู่ระบบ
+            </a>
           </p>
         </div>
       </form>

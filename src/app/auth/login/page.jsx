@@ -5,6 +5,8 @@ import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import useUserStore from "@/app/store/useUserStore";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
 export default function Login() {
   const setUser = useUserStore((state) => state.setUser);
@@ -43,11 +45,10 @@ export default function Login() {
         router.push("/");
       } else {
         const errorData = await response.json();
-        setErrorMessage(errorData.message[0].message);
-        console.log(errorData.message);
+        setErrorMessage("Invalid email or password");
       }
     } catch (e) {
-      setErrorMessage(`An error occurred: ${e.message}`);
+      setErrorMessage("Invalid email or password");
     }
   };
 
@@ -59,6 +60,10 @@ export default function Login() {
         className="bg-[#ffffff] p-10 rounded-md drop-shadow-md space-y-4 w-96"
         onSubmit={handleSubmit}
       >
+        <a href="/" className="flex text-[#A0A0A0] text-sm space-x-1">
+          <FontAwesomeIcon icon={faArrowLeft} className="w-3 h-auto" />
+          <p>หน้าหลัก</p>
+        </a>
         <h1 className="text-center text-3xl">เข้าสู่ระบบ</h1>
         <div>
           <label htmlFor="email">Email</label>
@@ -69,6 +74,7 @@ export default function Login() {
             className="w-full"
             value={login.email}
             onChange={handleChange}
+            required
           />
         </div>
         <div>
@@ -80,6 +86,7 @@ export default function Login() {
             className="w-full"
             value={login.password}
             onChange={handleChange}
+            required
           />
         </div>
         {errorMessage && (

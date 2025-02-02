@@ -2,11 +2,17 @@
 
 import { useState, useEffect } from "react";
 
-import Image from "next/image";
 import Card from "./components/Card";
 import CardLoading from "./components/CardLoading";
+import useUserStore from "./store/useUserStore";
 
 export default function Home() {
+  const { user, initializeUser, logout } = useUserStore();
+
+  useEffect(() => {
+    initializeUser();
+  }, [initializeUser]);
+
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
