@@ -11,11 +11,16 @@ export default function Navbar() {
   const router = useRouter();
   const { user, initializeUser, logout } = useUserStore();
 
-  useEffect(() => {
-    initializeUser();
-  }, [initializeUser]);
-
+  const [isLoading, setIsLoading] = useState(true); // State สำหรับจัดการ loading
   const [dropdown, setDropdown] = useState(false);
+
+  useEffect(() => {
+    const loadUser = async () => {
+      await initializeUser(); // โหลดข้อมูล user
+      setIsLoading(false); // เมื่อโหลดเสร็จสิ้น ให้ set isLoading เป็น false
+    };
+    loadUser();
+  }, [initializeUser]);
 
   useEffect(() => {
     const email = Cookies.get("email");
@@ -51,7 +56,11 @@ export default function Navbar() {
             <a href="/selling">SELLING</a>
           </li>
         </ul>
-        {!user ? (
+        {isLoading ? (
+          <div className="flex items-center space-x-2 border-2 rounded-md px-4 py-2 animate-pulse">
+            <p>Loading...</p>
+          </div>
+        ) : !user ? (
           <a
             href="/auth/login"
             className="flex items-center space-x-2 border-2 rounded-md px-4 py-2"
@@ -60,29 +69,27 @@ export default function Navbar() {
             <FontAwesomeIcon icon={faArrowRight} className="w-3 h-auto" />
           </a>
         ) : (
-          <>
-            <div className="relative">
-              <button
-                className="flex space-x-2 border-2 rounded-md px-4 py-2"
-                onClick={toggleDropdown}
-              >
-                {user.fname}
-              </button>
-              {dropdown && (
-                <ul className="absolute right-0 mt-2 w-48 bg-white border rounded-md shadow-lg">
-                  <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                    <a href="/profile/info">PROFILE</a>
-                  </li>
-                  <li
-                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                    onClick={handleLogout}
-                  >
-                    LOGOUT
-                  </li>
-                </ul>
-              )}
-            </div>
-          </>
+          <div className="relative">
+            <button
+              className="flex space-x-2 border-2 rounded-md px-4 py-2"
+              onClick={toggleDropdown}
+            >
+              {user.fname}
+            </button>
+            {dropdown && (
+              <ul className="absolute right-0 mt-2 w-48 bg-white border rounded-md shadow-lg">
+                <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+                  <a href="/profile/info">PROFILE</a>
+                </li>
+                <li
+                  className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                  onClick={handleLogout}
+                >
+                  LOGOUT
+                </li>
+              </ul>
+            )}
+          </div>
         )}
       </header>
     </>

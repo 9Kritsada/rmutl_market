@@ -23,6 +23,7 @@ export default function Product() {
   const [productOwner, setProductOwner] = useState({});
   const [popup, setPopup] = useState(false);
   const [contactInfo, setContactInfo] = useState("");
+  const [isLoading, setIsLoading] = useState(true); // State สำหรับจัดการ loading
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -47,6 +48,8 @@ export default function Product() {
 
           if (!checkRes.ok) {
             throw new Error("Failed to fetch email check");
+          } else {
+            setIsLoading(false);
           }
 
           const checkData = await checkRes.json();
@@ -98,50 +101,86 @@ export default function Product() {
   return (
     <>
       <AlertManager newAlert={alert} />
-      <main className="">
-        <div className="flex">
-          <div className="w-2/3 flex justify-center h-screen p-20">
-            <img
-              src={product.image}
-              alt={product.name}
-              className="h-[500px] aspect-square object-cover object-center bg-[#ffffff]"
-            />
-          </div>
-          <div className="w-1/3 bg-[#ffffff] p-10 space-y-10 pr-32 h-screen">
-            <hr />
-            <a href="/" className="flex items-center font-medium space-x-2 text-[#A0A0A0]">
-              <FontAwesomeIcon icon={faArrowLeft} className="w-3 h-auto" />
-              <p>BACK</p>
-            </a>
-            <div className="space-y-3">
-              <div>
-                <p className="text-[#A0A0A0] text-sm">
-                  {new Date(product.updatedAt).toLocaleString("th-TH", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                    hour: "2-digit",
-                    minute: "2-digit",
-                    second: "2-digit",
-                  })}
-                  <span> น.</span>
-                </p>
-                <h1 className="text-2xl font-bold">{product.name}</h1>
+      {isLoading ? (
+        <>
+          <main className="">
+            <div className="flex">
+              <div className="w-2/3 flex justify-center h-screen p-20">
+                <div className="h-[500px] aspect-square object-cover object-center bg-[#c5c5c5] animate-pulse"></div>
               </div>
-              <div>ผู้ขาย : {productOwner.fname} {productOwner.lname}</div>
-              <div>เรียนอยู่ : {productOwner.faculty}</div>
-              <div>รายละเอียด : {product.details}</div>
+              <div className="w-1/3 bg-[#ffffff] p-10 space-y-10 pr-32 h-screen">
+                <hr />
+                <a href="/" className="flex items-center font-medium space-x-2 text-[#A0A0A0]">
+                  <FontAwesomeIcon icon={faArrowLeft} className="w-3 h-auto" />
+                  <p>BACK</p>
+                </a>
+                <div className="space-y-3 animate-pulse">
+                  <div>
+                    <div className="h-4 bg-[#e5e5e5] mb-1"></div>
+                    <div className="bg-[#e5e5e5] h-8 w-32"></div>
+                  </div>
+                  <div className="bg-[#e5e5e5] h-6 w-44"></div>
+                  <div className="bg-[#e5e5e5] h-6 w-28"></div>
+                  <div className="bg-[#e5e5e5] h-20 w-full"></div>
+                </div>
+                <button
+                  onClick={handlePopup}
+                  className="bg-[#212121] w-full text-[#ffffff] flex items-center justify-center p-5 text-2xl rounded-md h-20 animate-pulse"
+                >
+                </button>
+                <hr />
+              </div>
             </div>
-            <button
-              onClick={handlePopup}
-              className="bg-[#212121] w-full text-[#ffffff] flex items-center justify-center p-5 text-2xl rounded-md"
-            >
-              ฿{new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(product.price)}
-            </button>
-            <hr />
-          </div>
-        </div>
-      </main>
+          </main>
+        </>
+      ) : (
+        <>
+          <main className="">
+            <div className="flex">
+              <div className="w-2/3 flex justify-center h-screen p-20">
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className="h-[500px] aspect-square object-cover object-center bg-[#ffffff]"
+                />
+              </div>
+              <div className="w-1/3 bg-[#ffffff] p-10 space-y-10 pr-32 h-screen">
+                <hr />
+                <a href="/" className="flex items-center font-medium space-x-2 text-[#A0A0A0]">
+                  <FontAwesomeIcon icon={faArrowLeft} className="w-3 h-auto" />
+                  <p>BACK</p>
+                </a>
+                <div className="space-y-3">
+                  <div>
+                    <p className="text-[#A0A0A0] text-sm">
+                      {new Date(product.updatedAt).toLocaleString("th-TH", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        second: "2-digit",
+                      })}
+                      <span> น.</span>
+                    </p>
+                    <h1 className="text-2xl font-bold">{product.name}</h1>
+                  </div>
+                  <div>ผู้ขาย : {productOwner.fname} {productOwner.lname}</div>
+                  <div>เรียนอยู่ : {productOwner.faculty}</div>
+                  <div>รายละเอียด : {product.details}</div>
+                </div>
+                <button
+                  onClick={handlePopup}
+                  className="bg-[#212121] w-full text-[#ffffff] flex items-center justify-center p-5 text-2xl rounded-md"
+                >
+                  ฿{new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(product.price)}
+                </button>
+                <hr />
+              </div>
+            </div>
+          </main>
+        </>
+      )}
 
       {popup && (
         <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center">

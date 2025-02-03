@@ -5,6 +5,7 @@ import useUserStore from "../../store/useUserStore";
 import { useRouter } from "next/navigation";
 import ProfileMenu from "@/app/components/ProfileNav";
 import AlertManager from "@/app/components/AlertManager";
+import InfoProfileLoading from "@/app/components/InfoProfileLoading";
 
 export default function Profile() {
   const [alert, setAlert] = useState(null);
@@ -46,12 +47,9 @@ export default function Profile() {
 
   if (loading) {
     return (
-      <main className="my-20 px-32">
-        <div className="grid grid-cols-3 gap-4 h-72 animate-pulse">
-          <div className="bg-[#ffffff] p-10 rounded-md drop-shadow-md space-y-4 w-full"></div>
-          <div className="bg-[#ffffff] p-10 rounded-md drop-shadow-md space-y-4 col-span-2 w-full"></div>
-        </div>
-      </main>
+      <>
+        <InfoProfileLoading />
+      </>
     );
   }
 

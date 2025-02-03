@@ -7,6 +7,7 @@ import ProfileMenu from "@/app/components/ProfileNav";
 import AlertManager from "@/app/components/AlertManager";
 import Cookies from "js-cookie";
 import { decrypt } from "@/app/utils/encryption";
+import InfoProfileLoading from "@/app/components/InfoProfileLoading";
 
 export default function Sold() {
   const [alert, setAlert] = useState(null);
@@ -68,12 +69,7 @@ export default function Sold() {
 
   if (loading) {
     return (
-      <main className="my-20 px-32">
-        <div className="grid grid-cols-3 gap-4 h-72 animate-pulse">
-          <div className="bg-[#ffffff] p-10 rounded-md drop-shadow-md space-y-4 w-full"></div>
-          <div className="bg-[#ffffff] p-10 rounded-md drop-shadow-md space-y-4 col-span-2 w-full"></div>
-        </div>
-      </main>
+      <InfoProfileLoading />
     );
   }
 

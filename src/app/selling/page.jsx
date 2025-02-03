@@ -178,7 +178,7 @@ export default function Selling() {
                 <input
                   type="submit"
                   className="px-4 py-2 rounded-md bg-[#976829] text-white"
-                  value="SUBMIT"
+                  value="ขายสินค้า"
                 />
               </div>
             </form>
