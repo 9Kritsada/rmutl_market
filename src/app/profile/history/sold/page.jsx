@@ -4,10 +4,16 @@ import { useState, useEffect } from "react";
 import useUserStore from "../../../store/useUserStore";
 import { useRouter } from "next/navigation";
 import ProfileMenu from "@/app/components/ProfileNav";
+import AlertManager from "@/app/components/AlertManager";
 import Cookies from "js-cookie";
 import { decrypt } from "@/app/utils/encryption";
 
 export default function Sold() {
+  const [alert, setAlert] = useState(null);
+
+  const showAlert = (message, type) => {
+    setAlert({ message, type }); // ส่งข้อความแจ้งเตือนไปที่ AlertManager
+  };
   const router = useRouter();
   const { user, initializeUser } = useUserStore();
 
@@ -15,8 +21,6 @@ export default function Sold() {
     initializeUser();
   }, [initializeUser]);
 
-  const [errorMessage, setErrorMessage] = useState("");
-  const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(true);
   const [products, setProducts] = useState([]);
   const [buyMessages, setBuyMessages] = useState({}); // State to store buy messages for each product
@@ -49,7 +53,7 @@ export default function Sold() {
           setProducts(data.data);
         } else {
           const errorData = await response.json();
-          setErrorMessage(errorData.message || "Failed to fetch products.");
+          showAlert(errorData.message || "Failed to fetch products.", "error")
         }
       } catch (err) {
         console.log(err);
@@ -65,7 +69,7 @@ export default function Sold() {
 
   const fetchBuyMessages = async (productID) => {
     try {
-      const response = await fetch(`/api/buy/?productID=${productID}`);
+      const response = await fetch(`/api/sell/?productID=${productID}`);
       if (response.ok) {
         const data = await response.json();
         setBuyMessages((prev) => ({
@@ -101,16 +105,14 @@ export default function Sold() {
 
       const result = await response.json();
       if (response.ok) {
-        setMessage("อัปเดตสถานะสำเร็จ");
-        setTimeout(() => {
-          setMessage("");
-        }, 2000);
+        showAlert("อัปเดตสถานะสำเร็จ", "success")
       } else {
-        setErrorMessage(result.message || "Failed to update status.");
+        showAlert(result.message || "Failed to update status.", "error")
       }
     } catch (err) {
       console.error("Error updating status:", err);
-      setErrorMessage("An error occurred while updating the product status.");
+      showAlert("An error occurred while updating the product status.", "error")
+
     }
   };
 
@@ -134,6 +136,7 @@ export default function Sold() {
 
   return (
     <>
+      <AlertManager newAlert={alert} />
       <main className="my-20 px-32">
         <div className="grid grid-cols-3 gap-4">
           <ProfileMenu />

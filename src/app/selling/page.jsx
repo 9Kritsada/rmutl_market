@@ -6,8 +6,15 @@ import Cookies from "js-cookie";
 import { decrypt } from "../utils/encryption";
 import useUserStore from "../store/useUserStore";
 import { useRouter } from "next/navigation";
+import AlertManager from "@/app/components/AlertManager";
 
 export default function Selling() {
+  const [alert, setAlert] = useState(null);
+
+  const showAlert = (message, type) => {
+    setAlert({ message, type });
+  };
+
   const router = useRouter();
 
   const { user, initializeUser, logout } = useUserStore();
@@ -41,7 +48,7 @@ export default function Selling() {
     e.preventDefault();
 
     if (!product.pName || !product.pPrice) {
-      alert("Please fill out all fields.");
+      showAlert("โปรดใส่ข้อมูลให้ครบ", "error")
       return;
     }
 
@@ -68,28 +75,25 @@ export default function Selling() {
       });
 
       if (response.ok) {
-        alert("Product submitted successfully!");
+        showAlert("เพิ่มสินค้าสำเร็จ", "success")
         setProduct({
           pName: "",
           pDetails: "",
           pPrice: "",
-          pImg: "https://cdn.pixabay.com/photo/2014/06/03/19/38/board-361516_1280.jpg",
+          pImg: "",
         });
       } else {
-        const errorData = await response.json(); // ดู Error Message
-        console.log("Error response:", errorData);
-        alert(
-          `Failed to submit product: ${errorData.message || "Unknown error"}`
-        );
+        const errorData = await response.json();
+        showAlert(`Failed to submit product: ${errorData.message || "Unknown error"}`, "error")
       }
     } catch (error) {
-      console.log("Error submitting product:", error);
-      alert("An error occurred while submitting the product.");
+      showAlert("เกิดข้อผิดพลาดในขณะที่ส่งข้อมูล", "error")
     }
   };
 
   return (
     <>
+      <AlertManager newAlert={alert} />
       <main>
         <div className="my-20 px-32">
           <h1 className="text-center text-3xl">SELLING</h1>

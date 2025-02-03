@@ -6,8 +6,15 @@ import Cookies from "js-cookie";
 import { decrypt } from "../../../utils/encryption";
 import useUserStore from "../../../store/useUserStore";
 import { useParams, useRouter } from "next/navigation";
+import AlertManager from "@/app/components/AlertManager";
 
 export default function Edit() {
+  const [alert, setAlert] = useState(null);
+
+  const showAlert = (message, type) => {
+    setAlert({ message, type }); // ส่งข้อความแจ้งเตือนไปที่ AlertManager
+  };
+
   const router = useRouter();
 
   const { id } = useParams();
@@ -25,7 +32,6 @@ export default function Edit() {
   }, []);
 
   const [product, setProduct] = useState({});
-  const [productOwner, setProductOwner] = useState({});
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -34,6 +40,7 @@ export default function Edit() {
         if (!res.ok) {
           if (res.status === 404) {
             alert("Product not found!");
+            showAlert("ไม่เจอสินค้า", "error");
           } else {
             throw new Error("Failed to fetch product");
           }
@@ -43,20 +50,8 @@ export default function Edit() {
         const data = await res.json();
         setProduct(data.data);
 
-        if (data.data?.email) {
-          const checkRes = await fetch(
-            `/api/check?email=${encodeURIComponent(data.data.email)}`,
-            {
-              method: "GET",
-            }
-          );
-          if (!checkRes.ok) throw new Error("Failed to fetch email check");
-          const checkData = await checkRes.json();
-          setProductOwner(checkData.data);
-        }
       } catch (err) {
-        console.error(err);
-        alert("An error occurred while fetching product data.");
+        showAlert("เกิดข้อผิดพลาดในขณะที่ดึงข้อมูลสินค้า", "error");
       }
     };
 
@@ -102,17 +97,18 @@ export default function Edit() {
         const errorData = await response.json();
         console.log(errorData);
       }
-
-      alert("Product updated successfully!");
-      router.push("/profile/history/sold");
+      showAlert("แก้ไขสินค้าสำเสร็จ", "success");
+      setTimeout(() => {
+        router.push("/profile/history/sold");
+      }, 1000);
     } catch (err) {
-      console.error(err);
-      alert("An error occurred while updating the product.");
+      showAlert("เกิดข้อผิดพลาดขณะอัปเดต", "error");
     }
   };
 
   return (
     <>
+      <AlertManager newAlert={alert} />
       <main>
         <div className="my-20 px-32">
           <h1 className="text-center text-3xl">EDIT</h1>
@@ -197,7 +193,7 @@ export default function Edit() {
                 <input
                   type="submit"
                   className="px-4 py-2 rounded-md bg-[#976829] text-white"
-                  value="SUBMIT"
+                  value="แก้ไข"
                 />
               </div>
             </form>

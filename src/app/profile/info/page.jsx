@@ -4,8 +4,15 @@ import { useEffect, useState } from "react";
 import useUserStore from "../../store/useUserStore";
 import { useRouter } from "next/navigation";
 import ProfileMenu from "@/app/components/ProfileNav";
+import AlertManager from "@/app/components/AlertManager";
 
 export default function Profile() {
+  const [alert, setAlert] = useState(null);
+
+  const showAlert = (message, type) => {
+    setAlert({ message, type }); // ส่งข้อความแจ้งเตือนไปที่ AlertManager
+  };
+
   const router = useRouter();
   const { user, initializeUser, setUser } = useUserStore();
   const [userInfo, setUserInfo] = useState({
@@ -14,8 +21,6 @@ export default function Profile() {
     faculty: "",
   });
 
-  const [errorMessage, setErrorMessage] = useState("");
-  const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(true);
 
   const handleChange = (e) => {
@@ -37,7 +42,7 @@ export default function Profile() {
     if (!loading && !user) {
       router.push("/");
     }
-  }, [loading, user, router])
+  }, [loading, user, router]);
 
   if (loading) {
     return (
@@ -71,23 +76,20 @@ export default function Profile() {
       if (response.ok) {
         const data = await response.json();
         setUser(data.data);
-        setMessage("updated successfully");
-        setTimeout(() => {
-          setMessage(""); // ลบข้อความหลังจาก 2 วินาที
-        }, 2000);
-        setErrorMessage("");
+        showAlert("อัปเดตข้อมูลสำเร็จ", "success");
         router.push("/profile/info");
       } else {
         const errorData = await response.json();
-        setErrorMessage(errorData.message);
+        showAlert("errorData.message", "error");
       }
     } catch (e) {
-      setErrorMessage(`An error occurred: ${e.message}`);
+      showAlert(`An error occurred: ${e.message}`, "error");
     }
   };
 
   return (
     <>
+      <AlertManager newAlert={alert} />
       <main className="my-20 px-32">
         <div className="grid grid-cols-3 gap-4">
           <ProfileMenu />
@@ -159,12 +161,6 @@ export default function Profile() {
                 </select>
               </div>
             </div>
-            {errorMessage && (
-              <div className="fixed text-red-600 text-sm">{errorMessage}</div>
-            )}
-            {message && (
-              <div className="fixed text-green-600 text-sm">{message}</div>
-            )}
             <div className="flex justify-end">
               <input
                 type="submit"

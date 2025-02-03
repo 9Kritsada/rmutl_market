@@ -16,13 +16,13 @@ export default function ProfileMenu() {
       >
         ข้อมูลส่วนตัว
       </a>
-      {/* <a
+      <a
         href="/profile/history/bought"
         className={`w-full border-2 rounded-md px-4 py-2 ${isActive("/profile/history/bought") ? "bg-[#976829] text-white" : ""
           }`}
       >
         ประวัติการซื้อ
-      </a> */}
+      </a>
       <a
         href="/profile/history/sold"
         className={`w-full border-2 rounded-md px-4 py-2 ${isActive("/profile/history/sold") ? "bg-[#976829] text-white" : ""

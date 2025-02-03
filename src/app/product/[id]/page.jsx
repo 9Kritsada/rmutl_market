@@ -5,8 +5,15 @@ import { useParams, useRouter } from "next/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faX } from "@fortawesome/free-solid-svg-icons";
 import useUserStore from "@/app/store/useUserStore";
+import AlertManager from "@/app/components/AlertManager";
 
 export default function Product() {
+  const [alert, setAlert] = useState(null);
+
+  const showAlert = (message, type) => {
+    setAlert({ message, type });
+  };
+
   const { user } = useUserStore();
 
   const router = useRouter();
@@ -76,21 +83,21 @@ export default function Product() {
       });
 
       if (response.ok) {
-        const result = await response.json();
-        console.log("Purchase request sent successfully:", result);
+        showAlert("ส่งคำขอซื้อเรียบร้อยแล้ว", "success")
         setPopup(false); // ปิด popup หลังการส่ง
       } else {
-        const errorData = await response.json();
-        console.error("Failed to send purchase request:", errorData);
+        showAlert(`ส่งคำขอซื้อไม่สำเร็จ`, "error")
       }
     } catch (err) {
       console.error("Error occurred while sending purchase request:", err);
+      showAlert("เกิดข้อผิดพลาดขณะส่งคำขอซื้อ", "error")
     }
   };
 
 
   return (
     <>
+      <AlertManager newAlert={alert} />
       <main className="">
         <div className="flex">
           <div className="w-2/3 flex justify-center h-screen p-20">
