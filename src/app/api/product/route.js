@@ -8,7 +8,7 @@ export async function GET(req, res) {
     await connectMongoDB();
 
     // Query to filter products where status is "กำลังขาย"
-    const products = await Product.find({ status: "กำลังขาย" });
+    const products = await Product.find({ status: "กำลังขาย" }).sort({ createdAt: -1 });
 
     return NextResponse.json({
       message: "success",

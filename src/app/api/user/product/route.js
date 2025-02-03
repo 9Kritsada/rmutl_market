@@ -17,7 +17,7 @@ export async function GET(req) {
       );
     }
 
-    const products = await Product.find({ email });
+    const products = await Product.find({ email }).sort({ createdAt: -1 });
 
     if (!products || products.length === 0) {
       return NextResponse.json(

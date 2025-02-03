@@ -5,8 +5,8 @@ export default function Card({ pID, pImg, pName, pPrice, pLink }) {
         <div className="bg-[#FDFAE7] p-10 aspect-square">
           <img
             src={pImg}
-            alt=""
-            className="h-full aspect-square object-cover object-center"
+            alt={pName}
+            className="h-full aspect-square object-cover object-center bg-[#ffffff]"
           />
         </div>
         {pLink ? (

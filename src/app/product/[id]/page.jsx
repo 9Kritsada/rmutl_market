@@ -96,16 +96,16 @@ export default function Product() {
           <div className="w-2/3 flex justify-center h-screen p-20">
             <img
               src={product.image}
-              alt=""
-              className="h-[500px] aspect-square object-cover object-center"
+              alt={product.name}
+              className="h-[500px] aspect-square object-cover object-center bg-[#ffffff]"
             />
           </div>
           <div className="w-1/3 bg-[#ffffff] p-10 space-y-10 pr-32 h-screen">
             <hr />
-            <button className="text-[#A0A0A0]">
+            <a href="/" className="flex items-center font-medium space-x-2 text-[#A0A0A0]">
               <FontAwesomeIcon icon={faArrowLeft} className="w-3 h-auto" />
               <p>BACK</p>
-            </button>
+            </a>
             <div className="space-y-3">
               <div>
                 <p className="text-[#A0A0A0] text-sm">

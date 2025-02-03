@@ -27,7 +27,7 @@ export default function Selling() {
     pName: "",
     pDetails: "",
     pPrice: "",
-    pImg: "https://cdn.pixabay.com/photo/2014/06/03/19/38/board-361516_1280.jpg",
+    pImg: "",
     pOwner: Cookies.get("email"),
     pType: "",
   });
@@ -181,9 +181,9 @@ export default function Selling() {
             <div className="flex items-center justify-center">
               <div className="w-96">
                 <Card
-                  pImg={product.pImg}
+                  pImg={product.pImg || "https://cdn.pixabay.com/photo/2014/06/03/19/38/board-361516_1280.jpg"}
                   pName={product.pName || "Product Name"}
-                  pPrice={product.pPrice || "Price"}
+                  pPrice={product.pPrice || "0"}
                   pLink={false}
                 />
               </div>
