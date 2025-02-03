@@ -46,11 +46,11 @@ export default function Sold() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        setLoading(true);
         const response = await fetch(`/api/buy/?email=${email}`);
         if (response.ok) {
           const data = await response.json();
           setProducts(data.data);
+          setLoading(true);
         } else {
           const errorData = await response.json();
           showAlert(errorData.message || "Failed to fetch products.", "error")
