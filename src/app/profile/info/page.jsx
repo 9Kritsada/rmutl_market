@@ -78,7 +78,7 @@ export default function Profile() {
         router.push("/profile/info");
       } else {
         const errorData = await response.json();
-        showAlert("errorData.message", "error");
+        showAlert("ไม่สามารถดึงข้อมูลได้", "error");
       }
     } catch (e) {
       showAlert(`An error occurred: ${e.message}`, "error");

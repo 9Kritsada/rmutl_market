@@ -5,8 +5,15 @@ import { useState, useEffect } from "react";
 import Card from "./components/Card";
 import CardLoading from "./components/CardLoading";
 import useUserStore from "./store/useUserStore";
+import AlertManager from "@/app/components/AlertManager";
 
 export default function Home() {
+  const [alert, setAlert] = useState(null);
+
+  const showAlert = (message, type) => {
+    setAlert({ message, type });
+  };
+
   const { user, initializeUser } = useUserStore();
 
   useEffect(() => {
@@ -16,7 +23,6 @@ export default function Home() {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]); // สำหรับเก็บสินค้าหลังการกรอง
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [categories, setCategories] = useState([]); // สำหรับเก็บหมวดหมู่สินค้า
   const [selectedCategory, setSelectedCategory] = useState("ALL"); // หมวดหมู่ที่เลือก
   const [searchTerm, setSearchTerm] = useState(""); // คำค้นหา
@@ -27,6 +33,7 @@ export default function Home() {
     })
       .then((res) => {
         if (!res.ok) {
+          showAlert("ล้มเหลวในการดึงข้อมูลสินค้า", "error")
           throw new Error("Failed to fetch products");
         }
         return res.json();
@@ -42,7 +49,7 @@ export default function Home() {
         setLoading(false);
       })
       .catch((err) => {
-        setError(err.message);
+        showAlert(err.message, "error")
         setLoading(false);
       });
   }, []);
@@ -62,6 +69,7 @@ export default function Home() {
 
   return (
     <>
+      <AlertManager newAlert={alert} />
       <main className="bg-[#ffffff] pb-20">
         <div className="text-5xl flex flex-col items-center justify-center p-44 space-y-10">
           <h1>ซื้อ - ขาย แลกเปลี่ยน อุปกรณ์การเรียน</h1>
@@ -73,11 +81,10 @@ export default function Home() {
             {categories.map((category) => (
               <button
                 key={category}
-                className={`px-2 py-1 rounded-md ${
-                  selectedCategory === category
-                    ? "bg-[#976829] text-white"
-                    : "border"
-                }`}
+                className={`px-2 py-1 rounded-md ${selectedCategory === category
+                  ? "bg-[#976829] text-white"
+                  : "border"
+                  }`}
                 onClick={() => setSelectedCategory(category)}
               >
                 {category}
@@ -104,8 +111,6 @@ export default function Home() {
               <CardLoading />
               <CardLoading />
             </>
-          ) : error ? (
-            <p className="text-red-500">{error}</p>
           ) : (
             <>
               {filteredProducts.length > 0 ? (
