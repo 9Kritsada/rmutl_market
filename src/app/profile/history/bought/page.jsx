@@ -84,7 +84,7 @@ export default function Sold() {
                 {products.map((product) => (
                   <div
                     key={product._id}
-                    className="border rounded-lg p-6 shadow-sm bg-gradient-to-r from-white to-gray-50"
+                    className="border rounded-lg p-6 shadow-sm hover:border-black transition"
                   >
                     <div className="flex items-center justify-between mb-4">
                       <p className="text-sm text-gray-500">
@@ -121,7 +121,7 @@ export default function Sold() {
                         </p>
                       </div>
                     </div>
-                    <p className="mt-4 text-gray-700">
+                    <p className="mt-4 bg-gray-100 border rounded-lg px-4 py-2">
                       ข้อความ: {product.message}
                     </p>
                   </div>

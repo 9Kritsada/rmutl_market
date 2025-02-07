@@ -63,7 +63,7 @@ export default function Navbar() {
         ) : !user ? (
           <a
             href="/auth/login"
-            className="flex items-center space-x-2 border-2 rounded-md px-4 py-2"
+            className="flex items-center space-x-2 border-2 hover:border-black transition rounded-md px-4 py-2"
           >
             <p>LOGIN</p>
             <FontAwesomeIcon icon={faArrowRight} className="w-3 h-auto" />
@@ -71,18 +71,26 @@ export default function Navbar() {
         ) : (
           <div className="relative">
             <button
-              className="flex space-x-2 border-2 rounded-md px-4 py-2"
+              className="flex items-center space-x-2 border-2 hover:border-black transition rounded-md px-4 py-2"
               onClick={toggleDropdown}
             >
               {user.fname}
             </button>
             {dropdown && (
               <div className="absolute right-0 mt-2 bg-white border-2 rounded-md shadow-lg">
-                <a href="/profile/info" className="flex items-center font-medium space-x-2 hover:bg-gray-100 px-6 py-2 cursor-pointer w-full">PROFILE</a>
+                <a
+                  href="/profile/info"
+                  className="flex items-center font-medium space-x-2 hover:bg-gray-100 px-6 py-2 cursor-pointer w-full"
+                >
+                  PROFILE
+                </a>
                 <hr />
-                <button className="hover:bg-gray-100 px-6 py-2 cursor-pointer w-full"
+                <button
+                  className="hover:bg-gray-100 px-6 py-2 cursor-pointer w-full"
                   onClick={handleLogout}
-                >LOGOUT</button>
+                >
+                  LOGOUT
+                </button>
               </div>
             )}
           </div>

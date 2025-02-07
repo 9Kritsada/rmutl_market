@@ -141,7 +141,7 @@ export default function Sold() {
               {products.map((product) => (
                 <div
                   key={product._id}
-                  className="border rounded-lg p-6 shadow-sm bg-gradient-to-r from-white to-gray-50"
+                  className="border rounded-lg p-6 shadow-sm hover:border-black transition"
                 >
                   {/* Header */}
                   <div className="flex justify-between items-center mb-4">
@@ -190,16 +190,15 @@ export default function Sold() {
                       className="h-28 w-28 rounded-xl object-cover border border-gray-300 shadow-sm"
                     />
                     <div className="flex-1">
-                      <h2 className="font-bold text-lg">{product.name}</h2>
-                      <p className="text-gray-600 text-sm">
-                        ประเภท: {product.type}
-                      </p>
-                      <p className="text-gray-600 text-sm">
+                      <p className="text-gray-600">
                         ราคา: ฿
                         {new Intl.NumberFormat("en-US", {
                           minimumFractionDigits: 2,
                           maximumFractionDigits: 2,
                         }).format(product.price)}
+                      </p>
+                      <p className="text-gray-600 text-sm">
+                        ประเภท: {product.type}
                       </p>
                     </div>
                     <a
@@ -214,7 +213,7 @@ export default function Sold() {
                   <div className="my-4 border-t border-gray-200"></div>
 
                   {/* Buyer Messages */}
-                  <div className="bg-gray-100 border rounded-lg p-4 shadow-inner max-h-56 overflow-y-scroll">
+                  <div className="bg-gray-100 border rounded-lg p-4  max-h-56 overflow-y-scroll">
                     <h3 className="font-semibold text-gray-700 text-lg mb-3">
                       ข้อความจากผู้ซื้อ
                     </h3>
