@@ -21,7 +21,7 @@ export async function GET(req) {
     }
 
     // ค้นหาใน BuyProduct ด้วย email
-    const buyHistory = await BuyProduct.find({ email }).sort({ createdAt: -1 });;
+    const buyHistory = await BuyProduct.find({ email }).sort({ createdAt: -1 });
 
     // ดึงข้อมูล productIDs จากประวัติการซื้อ
     const productIDs = buyHistory.map((item) => item.productID);
@@ -85,7 +85,7 @@ export async function POST(req) {
       productID,
       email,
       message,
-      status: "pending", // Initial status for the purchase request
+      // status: "pending", // Initial status for the purchase request
       createdAt: new Date(),
     });
 

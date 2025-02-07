@@ -15,6 +15,8 @@ export default function Selling() {
     setAlert({ message, type });
   };
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const router = useRouter();
 
   const { user, initializeUser, logout } = useUserStore();
@@ -46,9 +48,10 @@ export default function Selling() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
 
     if (!product.pName || !product.pPrice) {
-      showAlert("โปรดใส่ข้อมูลให้ครบ", "error")
+      showAlert("โปรดใส่ข้อมูลให้ครบ", "error");
       return;
     }
 
@@ -75,7 +78,10 @@ export default function Selling() {
       });
 
       if (response.ok) {
-        showAlert("เพิ่มสินค้าสำเร็จ", "success")
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 500);
+        showAlert("เพิ่มสินค้าสำเร็จ", "success");
         setProduct({
           pName: "",
           pDetails: "",
@@ -84,10 +90,13 @@ export default function Selling() {
         });
       } else {
         const errorData = await response.json();
-        showAlert(`Failed to submit product: ${errorData.message || "Unknown error"}`, "error")
+        showAlert(
+          `Failed to submit product: ${errorData.message || "Unknown error"}`,
+          "error"
+        );
       }
     } catch (error) {
-      showAlert("เกิดข้อผิดพลาดในขณะที่ส่งข้อมูล", "error")
+      showAlert("เกิดข้อผิดพลาดในขณะที่ส่งข้อมูล", "error");
     }
   };
 
@@ -177,15 +186,22 @@ export default function Selling() {
               <div className="flex justify-end pt-5">
                 <input
                   type="submit"
-                  className="px-4 py-2 rounded-md bg-[#976829] text-white"
+                  className={`
+                    px-4 py-2 rounded-md text-white
+                    ${ isLoading ? "bg-[#976829] opacity-80" : "bg-[#976829]"}
+                    `}
                   value="ขายสินค้า"
+                  disabled={isLoading}
                 />
               </div>
             </form>
             <div className="flex items-center justify-center">
               <div className="w-96">
                 <Card
-                  pImg={product.pImg || "https://cdn.pixabay.com/photo/2014/06/03/19/38/board-361516_1280.jpg"}
+                  pImg={
+                    product.pImg ||
+                    "https://cdn.pixabay.com/photo/2014/06/03/19/38/board-361516_1280.jpg"
+                  }
                   pName={product.pName || "Product Name"}
                   pPrice={product.pPrice || "0"}
                   pLink={false}

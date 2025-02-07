@@ -5,15 +5,15 @@ export const buyProductPostZodSchema = z.object({
   productId: z.string(),
   email: z.string().email(),
   message: z.string().min(1).max(255),
-  status: z.string()
+  // status: z.string()
 });
 
 const buyProductSchema = new mongoose.Schema(
   {
     productID: { type: String, required: true },
-    email: { type: String, required: true},
-    message: { type: String, required: true},
-    status: { type: String, required: true},
+    email: { type: String, required: true },
+    message: { type: String, required: true },
+    // status: { type: String, required: true },
   },
   { timestamps: true }
 );
