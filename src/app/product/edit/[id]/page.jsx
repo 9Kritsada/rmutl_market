@@ -33,6 +33,8 @@ export default function Edit() {
 
   const [product, setProduct] = useState({});
 
+  const encryptedEmail = Cookies.get("email");
+  const email = encryptedEmail ? decrypt(encryptedEmail) : null;
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -48,15 +50,20 @@ export default function Edit() {
           return;
         }
         const data = await res.json();
-        setProduct(data.data);
 
+        if (data.data.email !== email) {
+          router.push("/");
+        } else {
+          setProduct(data.data);
+        }
       } catch (err) {
+        console.error("Error fetching product:", err);
         showAlert("เกิดข้อผิดพลาดในขณะที่ดึงข้อมูลสินค้า", "error");
       }
     };
 
     fetchProduct();
-  }, [id, router]);
+  }, [id, router, user]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -189,7 +196,8 @@ export default function Edit() {
                   onChange={handleChange}
                 ></textarea>
               </div>
-              <div className="flex justify-end pt-5">
+              <div className="flex justify-end pt-5 space-x-2">
+                <a href="/profile/history/sold" className="px-4 py-2 rounded-md bg-gray-600 text-white">ยกเลิก</a>
                 <input
                   type="submit"
                   className="px-4 py-2 rounded-md bg-[#976829] text-white"
@@ -200,9 +208,9 @@ export default function Edit() {
             <div className="flex items-center justify-center">
               <div className="w-96">
                 <Card
-                  pImg={product.image || "https://via.placeholder.com/150"}
+                  pImg={product.image || "https://cdn.pixabay.com/photo/2014/06/03/19/38/board-361516_1280.jpg"}
                   pName={product.name || "Product Name"}
-                  pPrice={product.price || "Price"}
+                  pPrice={product.price || "0"}
                   pLink={false}
                 />
               </div>

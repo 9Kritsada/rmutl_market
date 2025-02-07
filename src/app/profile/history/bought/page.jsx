@@ -13,7 +13,7 @@ export default function Sold() {
   const [alert, setAlert] = useState(null);
 
   const showAlert = (message, type) => {
-    setAlert({ message, type }); // ส่งข้อความแจ้งเตือนไปที่ AlertManager
+    setAlert({ message, type });
   };
   const router = useRouter();
   const { user, initializeUser } = useUserStore();
@@ -28,7 +28,6 @@ export default function Sold() {
   useEffect(() => {
     const loadUser = async () => {
       await initializeUser();
-      setLoading(false);
     };
 
     loadUser();
@@ -50,10 +49,9 @@ export default function Sold() {
         if (response.ok) {
           const data = await response.json();
           setProducts(data.data);
-          setLoading(true);
         } else {
           const errorData = await response.json();
-          showAlert(errorData.message || "Failed to fetch products.", "error")
+          showAlert(errorData.message || "Failed to fetch products.", "error");
         }
       } catch (err) {
         console.log(err);
@@ -68,42 +66,70 @@ export default function Sold() {
   }, [email]);
 
   if (loading) {
-    return (
-      <InfoProfileLoading />
-    );
+    return <InfoProfileLoading />;
   }
 
   return (
     <>
       <AlertManager newAlert={alert} />
-      <main className="my-20 px-32">
-        <div className="grid grid-cols-3 gap-4">
+      <main className="my-20 px-72">
+        <div className="grid grid-cols-3 gap-6">
           <ProfileMenu />
-          <div className="bg-[#ffffff] p-10 rounded-md drop-shadow-md space-y-4 col-span-2 w-full">
-            {products.map((product) => (
-              <div key={product._id}>
-                <div className="border py-1 px-4 ">
-                  <div className="flex items-center space-x-2 justify-between rounded-md border-b py-2">
-                    <div className="w-56">
-                      <p className="text-sm text-gray-500">ชื่อสินค้า</p>
-                      {product.product.name}
+          <div className="bg-white p-10 rounded-2xl shadow-lg col-span-2">
+            <h1 className="text-xl font-bold text-gray-800 mb-6">
+              ประวัติการซื้อ
+            </h1>
+            {products.length > 0 ? (
+              <div className="space-y-4">
+                {products.map((product) => (
+                  <div
+                    key={product._id}
+                    className="border rounded-lg p-6 shadow-sm bg-gradient-to-r from-white to-gray-50"
+                  >
+                    <div className="flex items-center justify-between mb-4">
+                      <p className="text-sm text-gray-500">
+                        {new Date(product.updatedAt).toLocaleString("th-TH", {
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                          hour: "2-digit",
+                          minute: "2-digit",
+                          second: "2-digit",
+                        })}{" "}
+                        น.
+                      </p>
+                      <p className="text-sm font-medium text-gray-700">
+                        หมวดหมู่: {product.product.type}
+                      </p>
                     </div>
-                    <div className="w-24">
-                      <p className="text-sm text-gray-500">ราคา</p>
-                      ฿{new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(product.product.price)}
+                    <div className="flex items-center space-x-6">
+                      <img
+                        src={product.product.image}
+                        alt={product.product.name}
+                        className="h-20 w-20 rounded-lg object-cover border"
+                      />
+                      <div className="flex-1">
+                        <h2 className="text-lg font-bold text-gray-800">
+                          {product.product.name}
+                        </h2>
+                        <p className="text-gray-600">
+                          ฿
+                          {new Intl.NumberFormat("en-US", {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          }).format(product.product.price)}
+                        </p>
+                      </div>
                     </div>
-                    <div>
-                      <img src={product.product.image} alt={product.product.name} className="h-16 aspect-square object-cover object-center border overflow-hidden" />
-                    </div>
-                    <div className="w-36">
-                      <p className="text-sm text-gray-500">ประเภท</p>
-                      {product.product.type}
-                    </div>
+                    <p className="mt-4 text-gray-700">
+                      ข้อความ: {product.message}
+                    </p>
                   </div>
-                  <p className="py-2">ข้อความ : {product.message}</p>
-                </div>
+                ))}
               </div>
-            ))}
+            ) : (
+              <p className="text-gray-500">ไม่พบประวัติการซื้อ</p>
+            )}
           </div>
         </div>
       </main>

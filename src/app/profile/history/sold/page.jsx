@@ -29,7 +29,6 @@ export default function Sold() {
   useEffect(() => {
     const loadUser = async () => {
       await initializeUser();
-      setLoading(false);
     };
 
     loadUser();
@@ -51,10 +50,9 @@ export default function Sold() {
         if (response.ok) {
           const data = await response.json();
           setProducts(data.data);
-          setLoading(true);
         } else {
           const errorData = await response.json();
-          showAlert(errorData.message || "Failed to fetch products.", "error")
+          showAlert(errorData.message || "Failed to fetch products.", "error");
         }
       } catch (err) {
         console.log(err);
@@ -87,7 +85,9 @@ export default function Sold() {
     const updatedStatus = e.target.value;
     setProducts((prevProducts) =>
       prevProducts.map((product) =>
-        product._id === productId ? { ...product, status: updatedStatus } : product
+        product._id === productId
+          ? { ...product, status: updatedStatus }
+          : product
       )
     );
 
@@ -106,14 +106,16 @@ export default function Sold() {
 
       const result = await response.json();
       if (response.ok) {
-        showAlert("อัปเดตสถานะสำเร็จ", "success")
+        showAlert("อัปเดตสถานะสำเร็จ", "success");
       } else {
-        showAlert(result.message || "Failed to update status.", "error")
+        showAlert(result.message || "Failed to update status.", "error");
       }
     } catch (err) {
       console.error("Error updating status:", err);
-      showAlert("An error occurred while updating the product status.", "error")
-
+      showAlert(
+        "An error occurred while updating the product status.",
+        "error"
+      );
     }
   };
 
@@ -125,77 +127,132 @@ export default function Sold() {
   }, [products]);
 
   if (loading) {
-    return (
-      <InfoProfileLoading />
-    );
+    return <InfoProfileLoading />;
   }
 
   return (
     <>
       <AlertManager newAlert={alert} />
-      <main className="my-20 px-32">
+      <main className="my-20 px-72">
         <div className="grid grid-cols-3 gap-4">
           <ProfileMenu />
           <div className="bg-[#ffffff] p-10 rounded-md drop-shadow-md space-y-4 col-span-2 w-full">
-            {products.map((product) => (
-              <div key={product._id}>
-                <div className="flex items-center space-x-2 border py-2 px-4 justify-between rounded-md">
-                  <div className="relative">
-                    <p className="text-sm text-gray-500">สถานะ</p>
+            <div className="grid grid-cols-1 gap-6">
+              {products.map((product) => (
+                <div
+                  key={product._id}
+                  className="border rounded-lg p-6 shadow-sm bg-gradient-to-r from-white to-gray-50"
+                >
+                  {/* Header */}
+                  <div className="flex justify-between items-center mb-4">
+                    <h2 className="font-bold text-2xl text-gray-800">
+                      {product.name}
+                    </h2>
                     <select
                       name="status"
                       id="status"
                       value={product.status}
                       onChange={(e) => handleStatusChange(e, product._id)}
-                      required
-                      className={`text-sm font-normal ${product.status === "กำลังขาย"
-                        ? "bg-orange-600 text-white"
-                        : product.status === "สิ้นสุดการขาย"
-                          ? "bg-green-700 text-white"
-                          : "bg-gray-700 text-white"
-                        } p-2 rounded`}
+                      className={`text-sm px-3 py-1 rounded-lg font-medium shadow ${
+                        product.status === "กำลังขาย"
+                          ? "bg-orange-500 text-white"
+                          : product.status === "สิ้นสุดการขาย"
+                          ? "bg-green-600 text-white"
+                          : "bg-gray-600 text-white"
+                      }`}
                     >
-                      <option value="กำลังขาย" className="bg-white text-[#000000]">กำลังขาย</option>
-                      <option value="สิ้นสุดการขาย" className="bg-white text-[#000000]">ขายเสร็จสิ้น</option>
-                      <option value="ยกเลิกขาย" className="bg-white text-[#000000]">ยกเลิกขาย</option>
-                    </select>
-                    {/* {message && <div className="absolute text-green-500 text-sm text-nowrap">{message}</div>} */}
-                  </div>
-                  <div className="w-56">
-                    <p className="text-sm text-gray-500">ชื่อสินค้า</p>
-                    {product.name}
-                  </div>
-                  <div className="w-24">
-                    <p className="text-sm text-gray-500">ราคา</p>
-                    ฿{new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(product.price)}
-                  </div>
-                  <div>
-                    <img src={product.image} alt={product.name} className="h-16 aspect-square object-cover object-center border overflow-hidden" />
-                  </div>
-                  <div className="w-36">
-                    <p className="text-sm text-gray-500">ประเภท</p>
-                    {product.type}
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-500">จัดการ</p>
-                    <a href={`/product/edit/${product._id}`}>แก้ไข</a>
-                  </div>
-                </div>
-                <div className="pl-10">
-                  {buyMessages[product._id] && (
-                    buyMessages[product._id].map((message) => (
-                      <div
-                        key={message._id}
-                        className="border p-2 rounded-md mt-1"
+                      <option
+                        value="กำลังขาย"
+                        className="bg-white text-gray-800"
                       >
-                        <p className="text-sm text-gray-500">ผู้ซื้อ: {message.email}</p>
-                        <p>ข้อความ: {message.message}</p>
-                      </div>
-                    ))
-                  )}
+                        กำลังขาย
+                      </option>
+                      <option
+                        value="สิ้นสุดการขาย"
+                        className="bg-white text-gray-800"
+                      >
+                        ขายเสร็จสิ้น
+                      </option>
+                      <option
+                        value="ยกเลิกขาย"
+                        className="bg-white text-gray-800"
+                      >
+                        ยกเลิกขาย
+                      </option>
+                    </select>
+                  </div>
+
+                  {/* Product Details */}
+                  <div className="flex items-center gap-6">
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      className="h-28 w-28 rounded-xl object-cover border border-gray-300 shadow-sm"
+                    />
+                    <div className="flex-1">
+                      <h2 className="font-bold text-lg">{product.name}</h2>
+                      <p className="text-gray-600 text-sm">
+                        ประเภท: {product.type}
+                      </p>
+                      <p className="text-gray-600 text-sm">
+                        ราคา: ฿
+                        {new Intl.NumberFormat("en-US", {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        }).format(product.price)}
+                      </p>
+                    </div>
+                    <a
+                      href={`/product/edit/${product._id}`}
+                      className="text-sm px-4 py-2 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-400"
+                    >
+                      แก้ไขสินค้า
+                    </a>
+                  </div>
+
+                  {/* Divider */}
+                  <div className="my-4 border-t border-gray-200"></div>
+
+                  {/* Buyer Messages */}
+                  <div className="bg-gray-100 border rounded-lg p-4 shadow-inner max-h-56 overflow-y-scroll">
+                    <h3 className="font-semibold text-gray-700 text-lg mb-3">
+                      ข้อความจากผู้ซื้อ
+                    </h3>
+                    {buyMessages[product._id] &&
+                    buyMessages[product._id].length > 0 ? (
+                      buyMessages[product._id].map((message) => (
+                        <div
+                          key={message._id}
+                          className="border rounded-lg p-4 mt-2 bg-white shadow-sm"
+                        >
+                          <div className="text-sm text-gray-500 mb-1">
+                            <span className="font-medium text-gray-700">
+                              {message.email}
+                            </span>
+                            &nbsp; &#183;{" "}
+                            {new Date(message.updatedAt).toLocaleString(
+                              "th-TH",
+                              {
+                                year: "numeric",
+                                month: "numeric",
+                                day: "numeric",
+                                hour: "2-digit",
+                                minute: "2-digit",
+                              }
+                            )}
+                          </div>
+                          <p className="text-gray-800">{message.message}</p>
+                        </div>
+                      ))
+                    ) : (
+                      <p className="text-sm text-gray-500">
+                        ยังไม่มีข้อความจากผู้ซื้อ
+                      </p>
+                    )}
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </main>

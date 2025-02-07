@@ -14,6 +14,8 @@ export default function Profile() {
     setAlert({ message, type }); // ส่งข้อความแจ้งเตือนไปที่ AlertManager
   };
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const router = useRouter();
   const { user, initializeUser, setUser } = useUserStore();
   const [userInfo, setUserInfo] = useState({
@@ -55,6 +57,7 @@ export default function Profile() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
 
     try {
       const response = await fetch(`/api/user?id=${user.userId}`, {
@@ -74,6 +77,9 @@ export default function Profile() {
       if (response.ok) {
         const data = await response.json();
         setUser(data.data);
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 500);
         showAlert("อัปเดตข้อมูลสำเร็จ", "success");
         router.push("/profile/info");
       } else {
@@ -88,7 +94,7 @@ export default function Profile() {
   return (
     <>
       <AlertManager newAlert={alert} />
-      <main className="my-20 px-32">
+      <main className="my-20 px-72">
         <div className="grid grid-cols-3 gap-4">
           <ProfileMenu />
           <form
@@ -162,8 +168,12 @@ export default function Profile() {
             <div className="flex justify-end">
               <input
                 type="submit"
-                className="px-4 py-2 rounded-md bg-[#976829] text-white"
+                className={`
+                  px-4 py-2 rounded-md text-white
+                  ${isLoading ? "bg-[#976829] opacity-80" : "bg-[#976829]"}
+                  `}
                 value="บันทึก"
+                disabled={isLoading}
               />
             </div>
           </form>

@@ -8,7 +8,7 @@ export default function ProfileMenu() {
   const isActive = (link) => pathname === link;
 
   return (
-    <div className="bg-[#ffffff] p-10 rounded-md drop-shadow-md flex flex-col space-y-4">
+    <div className="bg-[#ffffff] p-10 rounded-md drop-shadow-md flex flex-col space-y-4 h-fit">
       <a
         href="/profile/info"
         className={`w-full border-2 rounded-md px-4 py-2 ${isActive("/profile/info") ? "bg-[#976829] text-white" : ""

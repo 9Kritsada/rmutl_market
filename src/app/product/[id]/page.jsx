@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
@@ -8,6 +8,7 @@ import useUserStore from "@/app/store/useUserStore";
 import AlertManager from "@/app/components/AlertManager";
 
 export default function Product() {
+  const [loading, setLoading] = useState(true);
   const [alert, setAlert] = useState(null);
 
   const showAlert = (message, type) => {
@@ -42,9 +43,12 @@ export default function Product() {
 
         // Fetch additional check based on product email
         if (data.data?.email) {
-          const checkRes = await fetch(`/api/check?email=${encodeURIComponent(data.data.email)}`, {
-            method: "GET",
-          });
+          const checkRes = await fetch(
+            `/api/check?email=${encodeURIComponent(data.data.email)}`,
+            {
+              method: "GET",
+            }
+          );
 
           if (!checkRes.ok) {
             throw new Error("Failed to fetch email check");
@@ -53,7 +57,7 @@ export default function Product() {
           }
 
           const checkData = await checkRes.json();
-          setProductOwner(checkData.data)
+          setProductOwner(checkData.data);
         }
       } catch (err) {
         console.error(err);
@@ -71,7 +75,10 @@ export default function Product() {
     setPopup(true);
   };
 
-  const sendContactInfo = async (contactInfo) => {
+  const sendContactInfo = async (e) => {
+    e.preventDefault();
+
+    setIsLoading(true);
     try {
       const response = await fetch("http://localhost:3000/api/buy/", {
         method: "POST",
@@ -86,17 +93,21 @@ export default function Product() {
       });
 
       if (response.ok) {
-        showAlert("ส่งคำขอซื้อเรียบร้อยแล้ว", "success")
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 500);
+        showAlert("ส่งคำขอซื้อเรียบร้อยแล้ว", "success");
         setPopup(false); // ปิด popup หลังการส่ง
       } else {
-        showAlert(`ส่งคำขอซื้อไม่สำเร็จ`, "error")
+        const errorData = await response.json();
+        console.log(errorData);
+        showAlert(`ส่งคำขอซื้อไม่สำเร็จ`, "error");
       }
     } catch (err) {
       console.error("Error occurred while sending purchase request:", err);
-      showAlert("เกิดข้อผิดพลาดขณะส่งคำขอซื้อ", "error")
+      showAlert("เกิดข้อผิดพลาดขณะส่งคำขอซื้อ", "error");
     }
   };
-
 
   return (
     <>
@@ -110,7 +121,10 @@ export default function Product() {
               </div>
               <div className="w-1/3 bg-[#ffffff] p-10 space-y-10 pr-32 h-screen">
                 <hr />
-                <a href="/" className="flex items-center font-medium space-x-2 text-[#A0A0A0]">
+                <a
+                  href="/"
+                  className="flex items-center font-medium space-x-2 text-[#A0A0A0]"
+                >
                   <FontAwesomeIcon icon={faArrowLeft} className="w-3 h-auto" />
                   <p>BACK</p>
                 </a>
@@ -126,8 +140,7 @@ export default function Product() {
                 <button
                   onClick={handlePopup}
                   className="bg-[#212121] w-full text-[#ffffff] flex items-center justify-center p-5 text-2xl rounded-md h-20 animate-pulse"
-                >
-                </button>
+                ></button>
                 <hr />
               </div>
             </div>
@@ -146,7 +159,10 @@ export default function Product() {
               </div>
               <div className="w-1/3 bg-[#ffffff] p-10 space-y-10 pr-32 h-screen">
                 <hr />
-                <a href="/" className="flex items-center font-medium space-x-2 text-[#A0A0A0]">
+                <a
+                  href="/"
+                  className="flex items-center font-medium space-x-2 text-[#A0A0A0]"
+                >
                   <FontAwesomeIcon icon={faArrowLeft} className="w-3 h-auto" />
                   <p>BACK</p>
                 </a>
@@ -165,7 +181,9 @@ export default function Product() {
                     </p>
                     <h1 className="text-2xl font-bold">{product.name}</h1>
                   </div>
-                  <div>ผู้ขาย : {productOwner.fname} {productOwner.lname}</div>
+                  <div>
+                    ผู้ขาย : {productOwner.fname} {productOwner.lname}
+                  </div>
                   <div>เรียนอยู่ : {productOwner.faculty}</div>
                   <div>รายละเอียด : {product.details}</div>
                 </div>
@@ -173,7 +191,11 @@ export default function Product() {
                   onClick={handlePopup}
                   className="bg-[#212121] w-full text-[#ffffff] flex items-center justify-center p-5 text-2xl rounded-md"
                 >
-                  ฿{new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(product.price)}
+                  ฿
+                  {new Intl.NumberFormat("en-US", {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  }).format(product.price)}
                 </button>
                 <hr />
               </div>
@@ -190,7 +212,10 @@ export default function Product() {
                 <FontAwesomeIcon icon={faX} className="w-3 h-auto" />
               </button>
             </div>
-            <div className="space-y-10 w-96">
+            <form
+              className="space-y-10 w-96"
+              onSubmit={sendContactInfo}
+            >
               <h1 className="text-2xl font-bold">ต้องการซื้อ</h1>
               <div className="space-y-1">
                 <h1>ส่งข้อมูลติดต่อผู้ขาย</h1>
@@ -199,15 +224,19 @@ export default function Product() {
                   className="border p-2 w-full"
                   placeholder="Line: lineid, Tel:08888888888"
                   onChange={(e) => setContactInfo(e.target.value)} // บันทึกข้อมูล input
+                  required
                 />
               </div>
-              <button
-                onClick={() => sendContactInfo(contactInfo)} // เรียกใช้ฟังก์ชันส่งข้อมูล
-                className="px-4 py-2 rounded-md bg-[#976829] text-white w-full flex items-center justify-center"
-              >
-                ส่งข้อมูล
-              </button>
-            </div>
+              <input
+                type="submit"
+                className={`
+                  px-4 py-2 rounded-md text-white w-full flex items-center justify-center
+                  ${isLoading ? "bg-[#976829] opacity-80" : "bg-[#976829]"}
+                  `}
+                value="ส่งข้อมูล"
+                disabled={isLoading}
+              />
+            </form>
           </div>
         </div>
       )}
