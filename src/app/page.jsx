@@ -21,11 +21,21 @@ export default function Home() {
   }, [initializeUser]);
 
   const [products, setProducts] = useState([]);
-  const [filteredProducts, setFilteredProducts] = useState([]); // สำหรับเก็บสินค้าหลังการกรอง
+  const [filteredProducts, setFilteredProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [categories, setCategories] = useState([]); // สำหรับเก็บหมวดหมู่สินค้า
-  const [selectedCategory, setSelectedCategory] = useState("ALL"); // หมวดหมู่ที่เลือก
-  const [searchTerm, setSearchTerm] = useState(""); // คำค้นหา
+  const [categories, setCategories] = useState([
+    "ALL",
+    "หนังสือ",
+    "อุปกรณ์เครื่องเขียน",
+    "เครื่องมือ",
+    "อื่นๆ",
+  ]);
+  const [selectedCategory, setSelectedCategory] = useState("ALL");
+  const [searchTerm, setSearchTerm] = useState("");
+
+  // Pagination states
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 16; // จำนวนสินค้าต่อหน้า
 
   useEffect(() => {
     fetch("/api/product", {
@@ -33,28 +43,22 @@ export default function Home() {
     })
       .then((res) => {
         if (!res.ok) {
-          showAlert("ล้มเหลวในการดึงข้อมูลสินค้า", "error")
+          showAlert("ล้มเหลวในการดึงข้อมูลสินค้า", "error");
           throw new Error("Failed to fetch products");
         }
         return res.json();
       })
       .then((data) => {
-        setProducts(data.data); // ตั้งค่า products จาก API
-        setFilteredProducts(data.data); // ตั้งค่าเริ่มต้นของสินค้าที่กรอง
-        const uniqueCategories = [
-          "ALL",
-          ...new Set(data.data.map((product) => product.type)),
-        ];
-        setCategories(uniqueCategories); // สร้างรายการหมวดหมู่สินค้า
+        setProducts(data.data);
+        setFilteredProducts(data.data);
         setLoading(false);
       })
       .catch((err) => {
-        showAlert(err.message, "error")
+        showAlert(err.message, "error");
         setLoading(false);
       });
   }, []);
 
-  // ฟังก์ชันสำหรับกรองสินค้า
   useEffect(() => {
     const filtered = products.filter((product) => {
       const matchesCategory =
@@ -65,7 +69,38 @@ export default function Home() {
       return matchesCategory && matchesSearch;
     });
     setFilteredProducts(filtered);
+    setCurrentPage(1); // รีเซ็ตไปหน้าที่ 1 เมื่อมีการกรองใหม่
   }, [products, selectedCategory, searchTerm]);
+
+  // คำนวณข้อมูลสำหรับหน้า Pagination
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredProducts.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+
+  const getPaginationRange = () => {
+    const range = [];
+    const start = Math.max(2, currentPage - 1);
+    const end = Math.min(totalPages - 1, currentPage + 1);
+
+    if (currentPage > 3) {
+      range.push(1, "...");
+    } else {
+      range.push(1);
+    }
+
+    for (let i = start; i <= end; i++) {
+      range.push(i);
+    }
+
+    if (currentPage < totalPages - 2) {
+      range.push("...", totalPages);
+    } else if (totalPages > 1) {
+      range.push(totalPages);
+    }
+
+    return range;
+  };
 
   return (
     <>
@@ -76,15 +111,15 @@ export default function Home() {
           <h1>มหาวิทยาลัยเทคโนโลยีราชมงคลล้านนา</h1>
         </div>
         <div className="px-32 flex justify-between mb-10">
-          {/* ปุ่มสำหรับเลือกหมวดหมู่ */}
           <div className="flex space-x-2">
             {categories.map((category) => (
               <button
                 key={category}
-                className={`px-2 py-1 rounded-md ${selectedCategory === category
-                  ? "bg-[#976829] text-white"
-                  : "border"
-                  }`}
+                className={`px-2 py-1 rounded-md ${
+                  selectedCategory === category
+                    ? "bg-[#976829] text-white"
+                    : "border"
+                }`}
                 onClick={() => setSelectedCategory(category)}
               >
                 {category}
@@ -92,7 +127,6 @@ export default function Home() {
             ))}
           </div>
 
-          {/* Input สำหรับค้นหา */}
           <input
             type="text"
             className="border rounded-md px-2 w-96"
@@ -102,7 +136,6 @@ export default function Home() {
           />
         </div>
 
-        {/* แสดงสินค้า */}
         <div className="grid grid-cols-4 gap-5 px-32">
           {loading ? (
             <>
@@ -113,8 +146,8 @@ export default function Home() {
             </>
           ) : (
             <>
-              {filteredProducts.length > 0 ? (
-                filteredProducts.map((product) => (
+              {currentItems.length > 0 ? (
+                currentItems.map((product) => (
                   <Card
                     key={product._id}
                     pID={product._id}
@@ -129,6 +162,36 @@ export default function Home() {
               )}
             </>
           )}
+        </div>
+
+        {/* Pagination Controls */}
+        <div className="flex justify-center mt-10">
+          <button
+            className="px-4 py-2 mx-1 border rounded-md disabled:opacity-50"
+            disabled={currentPage === 1}
+            onClick={() => setCurrentPage((prev) => prev - 1)}
+          >
+            ก่อนหน้า
+          </button>
+          {getPaginationRange().map((page, index) => (
+            <button
+              key={index}
+              className={`px-4 py-2 mx-1 border rounded-md ${
+                currentPage === page ? "bg-[#976829] text-white" : ""
+              } ${page === "..." ? "cursor-default" : ""}`}
+              onClick={() => page !== "..." && setCurrentPage(page)}
+              disabled={page === "..."}
+            >
+              {page}
+            </button>
+          ))}
+          <button
+            className="px-4 py-2 mx-1 border rounded-md disabled:opacity-50"
+            disabled={currentPage === totalPages}
+            onClick={() => setCurrentPage((prev) => prev + 1)}
+          >
+            ถัดไป
+          </button>
         </div>
       </main>
     </>
