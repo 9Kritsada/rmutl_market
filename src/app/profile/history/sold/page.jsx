@@ -8,6 +8,7 @@ import AlertManager from "@/app/components/AlertManager";
 import Cookies from "js-cookie";
 import { decrypt } from "@/app/utils/encryption";
 import InfoProfileLoading from "@/app/components/InfoProfileLoading";
+import Link from "next/link";
 
 export default function Sold() {
   const [alert, setAlert] = useState(null);
@@ -201,12 +202,12 @@ export default function Sold() {
                         ประเภท: {product.type}
                       </p>
                     </div>
-                    <a
+                    <Link
                       href={`/product/edit/${product._id}`}
                       className="text-sm px-4 py-2 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-400"
                     >
                       แก้ไขสินค้า
-                    </a>
+                    </Link>
                   </div>
 
                   {/* Divider */}

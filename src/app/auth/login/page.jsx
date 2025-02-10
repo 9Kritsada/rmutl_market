@@ -8,6 +8,7 @@ import useUserStore from "@/app/store/useUserStore";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import AlertManager from "@/app/components/AlertManager";
+import Link from "next/link";
 
 export default function Login() {
   const [alert, setAlert] = useState(null);
@@ -66,10 +67,10 @@ export default function Login() {
           className="bg-[#ffffff] p-10 rounded-md drop-shadow-md space-y-4 w-96"
           onSubmit={handleSubmit}
         >
-          <a href="/" className="flex text-[#A0A0A0] text-sm space-x-1">
+          <Link href="/" className="flex text-[#A0A0A0] text-sm space-x-1">
             <FontAwesomeIcon icon={faArrowLeft} className="w-3 h-auto" />
             <p>หน้าหลัก</p>
-          </a>
+          </Link>
           <h1 className="text-center text-3xl">เข้าสู่ระบบ</h1>
           <div>
             <label htmlFor="email">Email</label>
@@ -103,7 +104,7 @@ export default function Login() {
           />
           <div className="text-sm opacity-80">
             <p className="text-center">
-              ไม่มีบัญชี! <a href="/auth/register" className="text-[#976829] underline">สมัคร</a>
+              ไม่มีบัญชี! <Link href="/auth/register" className="text-[#976829] underline">สมัคร</Link>
             </p>
           </div>
         </form>

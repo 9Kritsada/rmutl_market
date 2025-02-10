@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faX } from "@fortawesome/free-solid-svg-icons";
 import useUserStore from "@/app/store/useUserStore";
 import AlertManager from "@/app/components/AlertManager";
+import Link from "next/link";
 
 export default function Product() {
   const [loading, setLoading] = useState(true);
@@ -121,13 +122,13 @@ export default function Product() {
               </div>
               <div className="w-1/3 bg-[#ffffff] p-10 space-y-10 pr-32 h-screen">
                 <hr />
-                <a
+                <Link
                   href="/"
                   className="flex items-center font-medium space-x-2 text-[#A0A0A0]"
                 >
                   <FontAwesomeIcon icon={faArrowLeft} className="w-3 h-auto" />
                   <p>BACK</p>
-                </a>
+                </Link>
                 <div className="space-y-3 animate-pulse">
                   <div>
                     <div className="h-4 bg-[#e5e5e5] mb-1"></div>
@@ -159,13 +160,13 @@ export default function Product() {
               </div>
               <div className="w-1/3 bg-[#ffffff] p-10 space-y-10 pr-32 h-screen">
                 <hr />
-                <a
+                <Link
                   href="/"
                   className="flex items-center font-medium space-x-2 text-[#A0A0A0]"
                 >
                   <FontAwesomeIcon icon={faArrowLeft} className="w-3 h-auto" />
                   <p>BACK</p>
-                </a>
+                </Link>
                 <div className="space-y-3">
                   <div>
                     <p className="text-[#A0A0A0] text-sm">

@@ -6,6 +6,7 @@ import Cookies from "js-cookie";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function Navbar() {
   const router = useRouter();
@@ -42,18 +43,24 @@ export default function Navbar() {
   return (
     <>
       <header className="text-[--foreground]">
-        <a href="/" className="h-full">
+        <Link href="/" className="h-full">
           <img src="/rmutl_logo.png" alt="" className="h-full" />
-        </a>
+        </Link>
         <ul className="flex space-x-10 font-medium text-xl">
           <li>
-            <a href="/" className="hover:underline">HOME</a>
+            <Link href="/" className="hover:underline">
+              HOME
+            </Link>
           </li>
           <li>
-            <a href="/about" className="hover:underline">ABOUT</a>
+            <Link href="/about" className="hover:underline">
+              ABOUT
+            </Link>
           </li>
           <li>
-            <a href="/selling" className="hover:underline">SELLING</a>
+            <Link href="/selling" className="hover:underline">
+              SELLING
+            </Link>
           </li>
         </ul>
         {isLoading ? (
@@ -61,13 +68,13 @@ export default function Navbar() {
             <p>Loading...</p>
           </div>
         ) : !user ? (
-          <a
+          <Link
             href="/auth/login"
             className="flex items-center space-x-2 border-2 hover:border-black transition rounded-md px-4 py-2"
           >
             <p>LOGIN</p>
             <FontAwesomeIcon icon={faArrowRight} className="w-3 h-auto" />
-          </a>
+          </Link>
         ) : (
           <div className="relative">
             <button
@@ -78,12 +85,13 @@ export default function Navbar() {
             </button>
             {dropdown && (
               <div className="absolute right-0 mt-2 bg-white border-2 rounded-md shadow-lg">
-                <a
+                <Link
                   href="/profile/info"
                   className="flex items-center font-medium space-x-2 hover:bg-gray-100 px-6 py-2 cursor-pointer w-full"
                 >
-                  PROFILE
-                </a>
+                  SELLING
+                </Link>
+
                 <hr />
                 <button
                   className="hover:bg-gray-100 px-6 py-2 cursor-pointer w-full"

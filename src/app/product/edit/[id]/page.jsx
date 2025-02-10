@@ -7,6 +7,7 @@ import { decrypt } from "../../../utils/encryption";
 import useUserStore from "../../../store/useUserStore";
 import { useParams, useRouter } from "next/navigation";
 import AlertManager from "@/app/components/AlertManager";
+import Link from "next/link";
 
 export default function Edit() {
   const [alert, setAlert] = useState(null);
@@ -197,7 +198,7 @@ export default function Edit() {
                 ></textarea>
               </div>
               <div className="flex justify-end pt-5 space-x-2">
-                <a href="/profile/history/sold" className="px-4 py-2 rounded-md bg-gray-600 text-white">ยกเลิก</a>
+                <Link href="/profile/history/sold" className="px-4 py-2 rounded-md bg-gray-600 text-white">ยกเลิก</Link>
                 <input
                   type="submit"
                   className="px-4 py-2 rounded-md bg-[#976829] text-white"

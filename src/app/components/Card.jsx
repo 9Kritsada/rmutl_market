@@ -1,9 +1,11 @@
+import Link from "next/link";
+
 export default function Card({ pID, pImg, pName, pPrice, pLink }) {
   return (
     <>
       {pLink ? (
         <>
-          <a href={`/product/${pID}`} className="hover:scale-105 transition">
+          <Link href={`/product/${pID}`} className="hover:scale-105 transition">
             <div className="bg-[#FDFAE7] p-10 aspect-square">
               <img
                 src={pImg}
@@ -22,7 +24,7 @@ export default function Card({ pID, pImg, pName, pPrice, pLink }) {
                 }).format(pPrice)}
               </p>
             </div>
-          </a>
+          </Link>
         </>
       ) : (
         <>
