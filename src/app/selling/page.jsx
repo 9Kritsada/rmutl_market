@@ -89,6 +89,9 @@ export default function Selling() {
           pImg: "",
           pType: "",
         });
+        setTimeout(() => {
+          router.push("/");
+        }, 1000);
       } else {
         const errorData = await response.json();
         showAlert(

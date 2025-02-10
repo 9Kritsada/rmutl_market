@@ -45,15 +45,15 @@ export default function Navbar() {
         <a href="/" className="h-full">
           <img src="/rmutl_logo.png" alt="" className="h-full" />
         </a>
-        <ul className="flex space-x-10 font-medium">
+        <ul className="flex space-x-10 font-medium text-xl">
           <li>
-            <a href="/">HOME</a>
+            <a href="/" className="hover:underline">HOME</a>
           </li>
           <li>
-            <a href="/about">ABOUT</a>
+            <a href="/about" className="hover:underline">ABOUT</a>
           </li>
           <li>
-            <a href="/selling">SELLING</a>
+            <a href="/selling" className="hover:underline">SELLING</a>
           </li>
         </ul>
         {isLoading ? (
