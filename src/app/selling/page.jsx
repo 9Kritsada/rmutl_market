@@ -87,6 +87,7 @@ export default function Selling() {
           pDetails: "",
           pPrice: "",
           pImg: "",
+          pType: "",
         });
       } else {
         const errorData = await response.json();
@@ -188,7 +189,7 @@ export default function Selling() {
                   type="submit"
                   className={`
                     px-4 py-2 rounded-md text-white
-                    ${ isLoading ? "bg-[#976829] opacity-80" : "bg-[#976829]"}
+                    ${isLoading ? "bg-[#976829] opacity-80" : "bg-[#976829]"}
                     `}
                   value="ขายสินค้า"
                   disabled={isLoading}
