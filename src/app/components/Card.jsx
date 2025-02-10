@@ -26,7 +26,7 @@ export default function Card({ pID, pImg, pName, pPrice, pLink }) {
         </>
       ) : (
         <>
-          <div className="hover:scale-125">
+          <div>
             <div className="bg-[#FDFAE7] p-10 aspect-square">
               <img
                 src={pImg}
