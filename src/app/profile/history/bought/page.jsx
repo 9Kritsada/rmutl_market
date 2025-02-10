@@ -76,9 +76,6 @@ export default function Sold() {
         <div className="grid grid-cols-3 gap-6">
           <ProfileMenu />
           <div className="bg-white p-10 rounded-2xl shadow-lg col-span-2">
-            <h1 className="text-xl font-bold text-gray-800 mb-6">
-              ประวัติการซื้อ
-            </h1>
             {products.length > 0 ? (
               <div className="space-y-4">
                 {products.map((product) => (

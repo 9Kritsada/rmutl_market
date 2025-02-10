@@ -51,9 +51,6 @@ export default function Sold() {
         if (response.ok) {
           const data = await response.json();
           setProducts(data.data);
-        } else {
-          const errorData = await response.json();
-          showAlert(errorData.message || "Failed to fetch products.", "error");
         }
       } catch (err) {
         console.log(err);

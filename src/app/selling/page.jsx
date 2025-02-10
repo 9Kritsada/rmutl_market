@@ -142,7 +142,7 @@ export default function Selling() {
               </div>
               <div>
                 <label htmlFor="pImg" className="block mb-1">
-                  รูปสินค้า
+                  URL รูปภาพสินค้า (ขนาดสัดส่วน 1:1)
                 </label>
                 <input
                   type="text"

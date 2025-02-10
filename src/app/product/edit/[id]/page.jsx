@@ -152,7 +152,7 @@ export default function Edit() {
               </div>
               <div>
                 <label htmlFor="image" className="block mb-1">
-                  รูปสินค้า
+                  URL รูปภาพสินค้า (ขนาดสัดส่วน 1:1)
                 </label>
                 <input
                   type="text"
@@ -198,7 +198,12 @@ export default function Edit() {
                 ></textarea>
               </div>
               <div className="flex justify-end pt-5 space-x-2">
-                <Link href="/profile/history/sold" className="px-4 py-2 rounded-md bg-gray-600 text-white">ยกเลิก</Link>
+                <Link
+                  href="/profile/history/sold"
+                  className="px-4 py-2 rounded-md bg-gray-600 text-white"
+                >
+                  ยกเลิก
+                </Link>
                 <input
                   type="submit"
                   className="px-4 py-2 rounded-md bg-[#976829] text-white"
@@ -209,7 +214,10 @@ export default function Edit() {
             <div className="flex items-center justify-center">
               <div className="w-96">
                 <Card
-                  pImg={product.image || "https://cdn.pixabay.com/photo/2014/06/03/19/38/board-361516_1280.jpg"}
+                  pImg={
+                    product.image ||
+                    "https://cdn.pixabay.com/photo/2014/06/03/19/38/board-361516_1280.jpg"
+                  }
                   pName={product.name || "Product Name"}
                   pPrice={product.price || "0"}
                   pLink={false}

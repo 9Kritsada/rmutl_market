@@ -187,7 +187,7 @@ export default function Home() {
           ))}
           <button
             className="px-4 py-2 mx-1 border rounded-md disabled:opacity-50"
-            disabled={currentPage === totalPages}
+            disabled={currentPage === totalPages || currentPage === 0}
             onClick={() => setCurrentPage((prev) => prev + 1)}
           >
             ถัดไป
