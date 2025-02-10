@@ -145,6 +145,7 @@ export default function Edit() {
                   name="price"
                   id="price"
                   className="w-full border border-gray-300 rounded-md px-3 py-2"
+                  min="0" max="100000"
                   defaultValue={product.price || ""}
                   onChange={handleChange}
                   required
@@ -155,7 +156,7 @@ export default function Edit() {
                   URL รูปภาพสินค้า (ขนาดสัดส่วน 1:1)
                 </label>
                 <input
-                  type="text"
+                  type="url"
                   name="image"
                   id="image"
                   className="w-full border border-gray-300 rounded-md px-3 py-2"

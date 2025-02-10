@@ -135,6 +135,7 @@ export default function Selling() {
                   name="pPrice"
                   id="pPrice"
                   className="w-full border border-gray-300 rounded-md px-3 py-2"
+                  min="0" max="100000"
                   value={product.pPrice}
                   onChange={handleChange}
                   required
@@ -145,7 +146,7 @@ export default function Selling() {
                   URL รูปภาพสินค้า (ขนาดสัดส่วน 1:1)
                 </label>
                 <input
-                  type="text"
+                  type="url"
                   name="pImg"
                   id="pImg"
                   className="w-full border border-gray-300 rounded-md px-3 py-2"
