@@ -131,10 +131,10 @@ export default function Sold() {
   return (
     <>
       <AlertManager newAlert={alert} />
-      <main className="my-20 px-72">
-        <div className="grid grid-cols-3 gap-4">
+      <main className="my-20 px-10 md:px-32 2xl:px-72">
+        <div className="grid lg:grid-cols-3 gap-4">
           <ProfileMenu />
-          <div className="bg-[#ffffff] p-10 rounded-md drop-shadow-md space-y-4 col-span-2 w-full">
+          <div className="bg-[#ffffff] p-3 md:p-10 rounded-md drop-shadow-md space-y-4 lg:col-span-2">
             {products.length > 0 ? (
               <div className="space-y-4">
                 {products.map((product) => (
@@ -143,8 +143,8 @@ export default function Sold() {
                     className="border rounded-lg p-6 shadow-sm hover:border-black transition"
                   >
                     {/* Header */}
-                    <div className="flex justify-between items-center mb-4">
-                      <h2 className="font-bold text-2xl text-gray-800">
+                    <div className="space-y-2 md:space-y-0 sm:flex justify-between items-center mb-4">
+                      <h2 className="font-bold text-lg line-clamp-3 md:text-2xl text-gray-800">
                         {product.name}
                       </h2>
                       <select
@@ -152,7 +152,7 @@ export default function Sold() {
                         id="status"
                         value={product.status}
                         onChange={(e) => handleStatusChange(e, product._id)}
-                        className={`text-sm px-3 py-1 rounded-lg font-medium shadow ${
+                        className={`text-sm px-1 md:px-3 py-1 rounded-lg font-medium shadow ${
                           product.status === "กำลังขาย"
                             ? "bg-orange-500 text-white"
                             : product.status === "สิ้นสุดการขาย"
@@ -182,7 +182,7 @@ export default function Sold() {
                     </div>
 
                     {/* Product Details */}
-                    <div className="flex items-center gap-6">
+                    <div className="space-y-2 md:space-y-0 flex items-center gap-6">
                       <img
                         src={product.image}
                         alt={product.name}
@@ -200,9 +200,19 @@ export default function Sold() {
                           ประเภท: {product.type}
                         </p>
                       </div>
+                      <div className="hidden sm:block">
+                        <Link
+                          href={`/product/edit/${product._id}`}
+                          className="w-full text-sm px-1 py-1 md:px-4 md:py-2 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-400"
+                        >
+                          แก้ไขสินค้า
+                        </Link>
+                      </div>
+                    </div>
+                    <div className="sm:hidden w-full mt-5">
                       <Link
                         href={`/product/edit/${product._id}`}
-                        className="text-sm px-4 py-2 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-400"
+                        className="w-full text-sm px-1 py-1 md:px-4 md:py-2 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-400"
                       >
                         แก้ไขสินค้า
                       </Link>
@@ -223,21 +233,25 @@ export default function Sold() {
                             key={message._id}
                             className="border rounded-lg p-4 mt-2 bg-white shadow-sm"
                           >
-                            <div className="text-sm text-gray-500 mb-1">
-                              <span className="font-medium text-gray-700">
+                            <div className="text-sm text-gray-500 mb-1 md:flex">
+                              <div className="font-medium text-gray-700">
                                 {message.email}
-                              </span>
-                              &nbsp; &#183;{" "}
-                              {new Date(message.updatedAt).toLocaleString(
-                                "th-TH",
-                                {
-                                  year: "numeric",
-                                  month: "numeric",
-                                  day: "numeric",
-                                  hour: "2-digit",
-                                  minute: "2-digit",
-                                }
-                              )}
+                              </div>
+                              <p className="hidden md:block">
+                                &nbsp; &#183; &nbsp;
+                              </p>
+                              <div>
+                                {new Date(message.updatedAt).toLocaleString(
+                                  "th-TH",
+                                  {
+                                    year: "numeric",
+                                    month: "numeric",
+                                    day: "numeric",
+                                    hour: "2-digit",
+                                    minute: "2-digit",
+                                  }
+                                )}
+                              </div>
                             </div>
                             <p className="text-gray-800">{message.message}</p>
                           </div>

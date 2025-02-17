@@ -72,10 +72,10 @@ export default function Sold() {
   return (
     <>
       <AlertManager newAlert={alert} />
-      <main className="my-20 px-72">
-        <div className="grid grid-cols-3 gap-6">
+      <main className="my-20 px-10 md:px-32 2xl:px-72">
+        <div className="grid lg:grid-cols-3 gap-4">
           <ProfileMenu />
-          <div className="bg-white p-10 rounded-2xl shadow-lg col-span-2">
+          <div className="bg-white p-3 md:p-10  rounded-2xl shadow-lg lg:col-span-2">
             {products.length > 0 ? (
               <div className="space-y-4">
                 {products.map((product) => (
@@ -83,7 +83,7 @@ export default function Sold() {
                     key={product._id}
                     className="border rounded-lg p-6 shadow-sm hover:border-black transition"
                   >
-                    <div className="flex items-center justify-between mb-4">
+                    <div className="lg:flex items-center justify-between mb-4">
                       <p className="text-sm text-gray-500">
                         {new Date(product.updatedAt).toLocaleString("th-TH", {
                           year: "numeric",
@@ -99,14 +99,14 @@ export default function Sold() {
                         หมวดหมู่: {product.product.type}
                       </p>
                     </div>
-                    <div className="flex items-center space-x-6">
+                    <div className="md:flex items-center space-y-2 md:space-y-0 md:space-x-6">
                       <img
                         src={product.product.image}
                         alt={product.product.name}
-                        className="h-20 w-20 rounded-lg object-cover border"
+                        className="h-20 w-20 rounded-lg object-cover border aspect-square"
                       />
-                      <div className="flex-1">
-                        <h2 className="text-lg font-bold text-gray-800">
+                      <div className="">
+                        <h2 className="md:text-lg font-bold text-gray-800 line-clamp-5 text-sm">
                           {product.product.name}
                         </h2>
                         <p className="text-gray-600">
@@ -118,9 +118,10 @@ export default function Sold() {
                         </p>
                       </div>
                     </div>
-                    <p className="mt-4 bg-gray-100 border rounded-lg px-4 py-2">
-                      ข้อความ: {product.message}
-                    </p>
+                    <div className="lg:flex mt-4 bg-gray-100 border rounded-lg px-4 py-2 lg:space-x-2">
+                      <p>ข้อความ:</p>
+                      <p>{product.message}</p>
+                    </div>
                   </div>
                 ))}
               </div>

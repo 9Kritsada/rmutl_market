@@ -75,7 +75,10 @@ export default function Home() {
   // คำนวณข้อมูลสำหรับหน้า Pagination
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredProducts.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = filteredProducts.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
   const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
 
   const getPaginationRange = () => {
@@ -106,12 +109,28 @@ export default function Home() {
     <>
       <AlertManager newAlert={alert} />
       <main className="bg-[#ffffff] pb-20">
-        <div className="text-5xl flex flex-col items-center justify-center p-44 space-y-10">
+        <div className="sm:text-xl md:text-3xl lg:text-4xl xl:text-5xl flex flex-col items-center justify-center p-10 lg:p-52 md:space-y-10 text-center">
           <h1>ซื้อ - ขาย แลกเปลี่ยน อุปกรณ์การเรียน</h1>
           <h1>มหาวิทยาลัยเทคโนโลยีราชมงคลล้านนา</h1>
         </div>
-        <div className="px-32 flex justify-between mb-10">
-          <div className="flex space-x-2">
+        <div className="px-10 lg:px-32 lg:flex justify-between mb-10 text-sm lg:text-base">
+          {/* แสดง Select บนหน้าจอขนาดเล็ก */}
+          <div className="mb-2 lg:mb-0 md:hidden">
+            <select
+              className="border rounded-md px-2 py-1 "
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+            >
+              {categories.map((category) => (
+                <option key={category} value={category}>
+                  {category === "ALL" ? "ทั้งหมด" : category}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* แสดง Button บนหน้าจอขนาด md ขึ้นไป */}
+          <div className="hidden md:flex md:space-x-2 mb-2 lg:mb-0">
             {categories.map((category) => (
               <button
                 key={category}
@@ -122,21 +141,22 @@ export default function Home() {
                 }`}
                 onClick={() => setSelectedCategory(category)}
               >
-                {category}
+                {category === "ALL" ? "ทั้งหมด" : category}
               </button>
             ))}
           </div>
 
+          {/* ช่องค้นหา */}
           <input
             type="text"
-            className="border rounded-md px-2 w-96"
+            className="border rounded-md px-2 w-80 xl:w-96"
             placeholder="Search"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
 
-        <div className="grid grid-cols-4 gap-5 px-32">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 px-10 lg:px-32">
           {loading ? (
             <>
               <CardLoading />
@@ -187,7 +207,7 @@ export default function Home() {
           ))}
           <button
             className="px-4 py-2 mx-1 border rounded-md disabled:opacity-50"
-            disabled={currentPage === totalPages || currentPage === 0}
+            disabled={currentPage === totalPages || currentPage === 0 || currentItems.length === 0}
             onClick={() => setCurrentPage((prev) => prev + 1)}
           >
             ถัดไป

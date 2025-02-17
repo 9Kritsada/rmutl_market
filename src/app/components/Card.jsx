@@ -5,8 +5,11 @@ export default function Card({ pID, pImg, pName, pPrice, pLink }) {
     <>
       {pLink ? (
         <>
-          <Link href={`/product/${pID}`} className="hover:scale-105 transition">
-            <div className="bg-[#FDFAE7] p-10 aspect-square">
+          <Link
+            href={`/product/${pID}`}
+            className="hover:border border-black hover:scale-105 transition"
+          >
+            <div className="bg-[#FDFAE7] aspect-square">
               <img
                 src={pImg}
                 alt={pName}
@@ -14,8 +17,7 @@ export default function Card({ pID, pImg, pName, pPrice, pLink }) {
               />
             </div>
 
-            <div className="flex items-center font-medium px-4 py-3 w-full bg-[#513300] text-[#ffffff] justify-between">
-              <p className="max-w-[80%] line-clamp-1">{pName}</p>
+            <div className="font-medium px-2 py-1 md:px-4 md:py-3 text-sm lg:text-base w-full justify-between">
               <p>
                 ฿
                 {new Intl.NumberFormat("en-US", {
@@ -23,13 +25,14 @@ export default function Card({ pID, pImg, pName, pPrice, pLink }) {
                   maximumFractionDigits: 2,
                 }).format(pPrice)}
               </p>
+              <p className="max-w-[80%] line-clamp-2 md:line-clamp-1">{pName}</p>
             </div>
           </Link>
         </>
       ) : (
         <>
-          <div>
-            <div className="bg-[#FDFAE7] p-10 aspect-square">
+          <div className="hover:border border-black hover:scale-105 transition bg-[#ffffff]">
+            <div className="bg-[#FDFAE7]  aspect-square">
               <img
                 src={pImg}
                 alt={pName}
@@ -37,8 +40,7 @@ export default function Card({ pID, pImg, pName, pPrice, pLink }) {
               />
             </div>
 
-            <div className="flex items-center font-medium px-4 py-3 w-full bg-[#513300] text-[#ffffff] justify-between">
-              <p className="max-w-[80%] line-clamp-1">{pName}</p>
+            <div className="font-medium px-4 py-3 w-full justify-between">
               <p>
                 ฿
                 {new Intl.NumberFormat("en-US", {
@@ -46,6 +48,7 @@ export default function Card({ pID, pImg, pName, pPrice, pLink }) {
                   maximumFractionDigits: 2,
                 }).format(pPrice)}
               </p>
+              <p className="max-w-[80%] line-clamp-2 md:line-clamp-1">{pName}</p>
             </div>
           </div>
         </>

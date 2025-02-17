@@ -94,15 +94,15 @@ export default function Profile() {
   return (
     <>
       <AlertManager newAlert={alert} />
-      <main className="my-20 px-72">
-        <div className="grid grid-cols-3 gap-4">
+      <main className="my-20 px-10 md:px-32 2xl:px-72">
+        <div className="grid lg:grid-cols-3 gap-4">
           <ProfileMenu />
           <form
             method="post"
-            className="bg-[#ffffff] p-10 rounded-md drop-shadow-md space-y-4 col-span-2 w-full"
+            className="bg-[#ffffff] p-3 md:p-10 rounded-md drop-shadow-md space-y-4 lg:col-span-2"
             onSubmit={handleSubmit}
           >
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid md:grid-cols-2 gap-4">
               <div>
                 <label htmlFor="fname">ชื่อ</label>
                 <input
@@ -128,7 +128,7 @@ export default function Profile() {
                 />
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid md:grid-cols-2 gap-4">
               <div>
                 <label htmlFor="email">Email</label>
                 <input

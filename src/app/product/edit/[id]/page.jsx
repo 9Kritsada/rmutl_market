@@ -118,10 +118,10 @@ export default function Edit() {
     <>
       <AlertManager newAlert={alert} />
       <main>
-        <div className="my-20 px-32">
-          <h1 className="text-center text-3xl">EDIT</h1>
-          <div className="grid grid-cols-2 py-10">
-            <form className="px-20 space-y-3" onSubmit={handleSubmit}>
+        <div className="my-20 px-10 xl:px-32">
+          <h1 className="text-center text-3xl">แก้ไขสินค้า</h1>
+          <div className="grid lg:grid-cols-2 py-10">
+            <form className="lg:px-20 space-y-3 order-2 lg:order-1" onSubmit={handleSubmit}>
               <div>
                 <label htmlFor="pName" className="block mb-1">
                   ชื่อสินค้า
@@ -212,8 +212,8 @@ export default function Edit() {
                 />
               </div>
             </form>
-            <div className="flex items-center justify-center">
-              <div className="w-96">
+            <div className="flex items-center justify-center order-1 lg:order-2">
+              <div className="sm:w-96 mb-5 md:mb-0">
                 <Card
                   pImg={
                     product.image ||

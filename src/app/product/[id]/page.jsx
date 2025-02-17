@@ -81,7 +81,7 @@ export default function Product() {
 
     setIsLoading(true);
     try {
-      const response = await fetch("http://localhost:3000/api/buy/", {
+      const response = await fetch("/api/buy/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -101,7 +101,7 @@ export default function Product() {
         setPopup(false); // ปิด popup หลังการส่ง
       } else {
         const errorData = await response.json();
-        console.log(errorData);
+        console.log("TTT ", errorData);
         showAlert(`ส่งคำขอซื้อไม่สำเร็จ`, "error");
       }
     } catch (err) {

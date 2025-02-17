@@ -17,11 +17,11 @@ body {
 }
 
 header {
-  @apply h-24 px-32 py-5 flex justify-between items-center bg-[#ffffff];
+  @apply h-24 px-10 md:px-32 py-5 flex justify-between items-center bg-[#ffffff];
 }
 
 footer {
-  @apply h-52 px-32 py-12 flex bg-[--rmutl-color] text-[#ffffff] space-x-10;
+  @apply h-52 px-10 md:px-32 py-12 flex bg-[--rmutl-color] text-[#ffffff] space-x-10;
 }
 
 button {

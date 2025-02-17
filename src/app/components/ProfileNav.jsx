@@ -9,13 +9,13 @@ export default function ProfileMenu() {
   const isActive = (link) => pathname === link;
 
   return (
-    <div className="bg-[#ffffff] p-10 rounded-md drop-shadow-md flex flex-col space-y-4 h-fit">
+    <div className="bg-[#ffffff] p-3 md:p-10 rounded-md drop-shadow-md flex flex-col space-y-4 h-fit w-full">
       <Link
         href="/profile/info"
         className={`w-full border hover:border-black transition rounded-md px-4 py-2 ${isActive("/profile/info") ? "bg-[#976829] text-white" : ""
           }`}
       >
-        ข้อมูลส่วนตัว
+        โปรไฟล์
       </Link>
       <Link
         href="/profile/history/bought"

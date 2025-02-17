@@ -45,7 +45,7 @@ export default function Login() {
 
       if (response.ok) {
         const data = await response.json();
-        Cookies.set('email', emailEncrypted, { expires: 1, secure: true })
+        Cookies.set('email', emailEncrypted, { expires: 1 })
         setUser(data.data);
         router.push("/");
       } else {
