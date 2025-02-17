@@ -116,11 +116,11 @@ export default function Product() {
       {isLoading ? (
         <>
           <main className="">
-            <div className="flex">
-              <div className="w-2/3 flex justify-center h-screen p-20">
-                <div className="h-[500px] aspect-square object-cover object-center bg-[#c5c5c5] animate-pulse"></div>
+            <div className="lg:flex">
+              <div className="lg:w-2/3 flex justify-center lg:h-screen p-10 md:p-20">
+                <div className="h-[300px] md:h-[500px] aspect-square object-cover object-center bg-[#c5c5c5] animate-pulse"></div>
               </div>
-              <div className="w-1/3 bg-[#ffffff] p-10 space-y-10 pr-32 h-screen">
+              <div className="lg:w-1/3 bg-[#ffffff] px-10 py-10 md:px-32 lg:px-10 space-y-10 lg:pr-32 lg:h-screen">
                 <hr />
                 <Link
                   href="/"
@@ -214,7 +214,7 @@ export default function Product() {
               </button>
             </div>
             <form
-              className="space-y-10 w-96"
+              className="space-y-10 sm:w-96"
               onSubmit={sendContactInfo}
             >
               <h1 className="text-2xl font-bold">ต้องการซื้อ</h1>
