@@ -31,7 +31,7 @@ export default function Card({ pID, pImg, pName, pPrice, pLink }) {
         </>
       ) : (
         <>
-          <div className="hover:border border-black hover:scale-105 transition bg-[#ffffff]">
+          <div className="border hover:border hover:border-black hover:scale-105 transition bg-[#ffffff]">
             <div className="bg-[#FDFAE7]  aspect-square">
               <img
                 src={pImg}

@@ -193,21 +193,22 @@ export default function Home() {
           >
             ก่อนหน้า
           </button>
-          {getPaginationRange().map((page, index) => (
-            <button
-              key={index}
-              className={`px-4 py-2 mx-1 border rounded-md ${
-                currentPage === page ? "bg-[#976829] text-white" : ""
-              } ${page === "..." ? "cursor-default" : ""}`}
-              onClick={() => page !== "..." && setCurrentPage(page)}
-              disabled={page === "..."}
-            >
-              {page}
-            </button>
-          ))}
+
+          <select
+            className="text-sm px-4 py-2 mx-2 border rounded-md"
+            value={currentPage}
+            onChange={(e) => setCurrentPage(Number(e.target.value))}
+          >
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+              <option key={page} value={page}>
+                หน้า {page}
+              </option>
+            ))}
+          </select>
+
           <button
             className="px-4 py-2 mx-1 border rounded-md disabled:opacity-50"
-            disabled={currentPage === totalPages || currentPage === 0 || currentItems.length === 0}
+            disabled={currentPage === totalPages || currentItems.length === 0}
             onClick={() => setCurrentPage((prev) => prev + 1)}
           >
             ถัดไป

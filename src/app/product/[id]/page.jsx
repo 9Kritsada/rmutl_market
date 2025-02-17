@@ -150,15 +150,15 @@ export default function Product() {
       ) : (
         <>
           <main className="">
-            <div className="flex">
-              <div className="w-2/3 flex justify-center h-screen p-20">
+            <div className="lg:flex">
+              <div className="lg:w-2/3 flex justify-center lg:h-screen p-10 md:p-20">
                 <img
                   src={product.image}
                   alt={product.name}
-                  className="h-[500px] aspect-square object-cover object-center bg-[#ffffff]"
+                  className="lg:h-[500px] aspect-square object-cover object-center bg-[#ffffff]"
                 />
               </div>
-              <div className="w-1/3 bg-[#ffffff] p-10 space-y-10 pr-32 h-screen">
+              <div className="lg:w-1/3 bg-[#ffffff] px-10 py-10 md:px-32 lg:px-10 space-y-10 lg:pr-32 lg:h-screen">
                 <hr />
                 <Link
                   href="/"
