@@ -85,7 +85,7 @@ export default function Login() {
             />
           </div>
           <div>
-            <label htmlFor="password">Password</label>
+            <label htmlFor="password">รหัสผ่าน</label>
             <input
               type="password"
               name="password"

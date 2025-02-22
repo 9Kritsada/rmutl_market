@@ -150,7 +150,7 @@ export default function Home() {
           <input
             type="text"
             className="border rounded-md px-2 w-80 xl:w-96"
-            placeholder="Search"
+            placeholder="ค้นหาสินค้า"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />

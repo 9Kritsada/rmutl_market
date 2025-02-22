@@ -133,7 +133,7 @@ export default function Register() {
             />
           </div>
           <div>
-            <label htmlFor="password">Password</label>
+            <label htmlFor="password">รหัสผ่าน</label>
             <input
               type="password"
               name="password"
@@ -145,7 +145,7 @@ export default function Register() {
             />
           </div>
           <div>
-            <label htmlFor="confirmPassword">Confirm Password</label>
+            <label htmlFor="confirmPassword">ยืนยันรหัสผ่าน</label>
             <input
               type="password"
               name="confirmPassword"

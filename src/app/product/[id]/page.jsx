@@ -127,7 +127,7 @@ export default function Product() {
                   className="flex items-center font-medium space-x-2 text-[#A0A0A0]"
                 >
                   <FontAwesomeIcon icon={faArrowLeft} className="w-3 h-auto" />
-                  <p>BACK</p>
+                  <p>กลับ</p>
                 </Link>
                 <div className="space-y-3 animate-pulse">
                   <div>
@@ -165,7 +165,7 @@ export default function Product() {
                   className="flex items-center font-medium space-x-2 text-[#A0A0A0]"
                 >
                   <FontAwesomeIcon icon={faArrowLeft} className="w-3 h-auto" />
-                  <p>BACK</p>
+                  <p>กลับ</p>
                 </Link>
                 <div className="space-y-3">
                   <div>
