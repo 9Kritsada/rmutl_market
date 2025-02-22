@@ -159,6 +159,18 @@ export default function Selling() {
                     onChange={handleChange}
                     required
                   />
+                  <p className="text-sm text-gray-500 mt-1">
+                    คุณสามารถอัปโหลดรูปภาพของคุณที่บริการฝากรูปภาพฟรี ที่{" "}
+                    <a
+                      href="https://th.imgbb.com/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-500"
+                    >
+                      ImgBB
+                    </a>{" "}
+                    และนำ URL ที่ได้มาวางที่นี่
+                  </p>
                 </div>
                 <div>
                   <label htmlFor="pType" className="block mb-1">
