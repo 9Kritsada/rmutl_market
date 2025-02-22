@@ -210,7 +210,7 @@ export default function Selling() {
                   <Card
                     pImg={
                       product.pImg ||
-                      "https://cdn.discordapp.com/attachments/866924147048185856/1340995784514211911/Untitled-1.jpg?ex=67b46325&is=67b311a5&hm=1008ea998c3a0986a0cda0abb018121504ebfa6bb1138192a85c3424f00f2807&"
+                      "https://cdn.discordapp.com/attachments/866924147048185856/1340995784514211911/Untitled-1.jpg?ex=67ba51e5&is=67b90065&hm=34d2c14e52146ab14c15bd40366063b2d5bbdc8cd0257446f36a2529bc20ff59&"
                     }
                     pName={product.pName || "ชื่อสินค้า"}
                     pPrice={product.pPrice || "0"}
