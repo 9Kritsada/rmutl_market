@@ -159,19 +159,27 @@ export default function Selling() {
                     onChange={handleChange}
                     required
                   />
-                  <p className="text-sm text-gray-500 mt-1">
-                    คุณสามารถอัปโหลดรูปภาพของคุณที่บริการฝากรูปภาพฟรี ที่{" "}
-                    <a
-                      href="https://th.imgbb.com/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-blue-500"
-                    >
-                      ImgBB
-                    </a>{" "}
-                    และนำ URL ที่ได้มาวางที่นี่
-                  </p>
+                  <div className="text-sm text-gray-500 mt-1">
+                    หากคุณต้องการอัปโหลดรูปภาพสินค้า:
+                    <ul className="list-disc list-inside">
+                      <li>
+                        เข้าไปที่เว็บไซต์{" "}
+                        <a
+                          href="https://imagekit.io/tools/image-to-url/"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-500"
+                        >
+                          imagekit.io
+                        </a>
+                      </li>
+                      <li>คลิกที่ 3 ขีด รูปที่ต้องการ</li>
+                      <li>เลือก "Copy Direct CDN URL"</li>
+                      <li>นำ URL ที่ได้มาใส่ในช่องนี้</li>
+                    </ul>
+                  </div>
                 </div>
+
                 <div>
                   <label htmlFor="pType" className="block mb-1">
                     ประเภทสินค้า
@@ -222,7 +230,7 @@ export default function Selling() {
                   <Card
                     pImg={
                       product.pImg ||
-                      "https://cdn.discordapp.com/attachments/866924147048185856/1340995784514211911/Untitled-1.jpg?ex=67ba51e5&is=67b90065&hm=34d2c14e52146ab14c15bd40366063b2d5bbdc8cd0257446f36a2529bc20ff59&"
+                      "https://media-hosting.imagekit.io//e83a9711120b49c7/Untitled-1.jpg?Expires=1834912012&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=PQ03bTbjIT0gzLrvDZ72gaPKHFq8XIaaxef3-pzF7tYjnmlW2mYD3VHrd60-XBEEG0PpUuZngnXFCOgGnJ1tfCnavfomU0PsQW6AJIripof7SLBuzKkzMqkpl5GKlOYH0nG3LXKEz5X8yafoBdVfw6wyC5m2YhgP6Da7kOE4ah6WFQWbndlqZe8UlfAFh5Ey0yVmw52jQzMPG6yiwkFyvq8oKOlDARMNgU2CxH4ZwuKLYXUiubhJOCwdogUjKtbyqD9cRfFLEj9q--MRlxSJdowAxbymXqLfFybBsHsbm~8mE9SFCmYJbjTLrr9w5ixXZDf5ZB~-pEa-FK~wpS~L4Q__"
                     }
                     pName={product.pName || "ชื่อสินค้า"}
                     pPrice={product.pPrice || "0"}
