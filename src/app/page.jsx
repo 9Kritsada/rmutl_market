@@ -109,10 +109,16 @@ export default function Home() {
     <>
       <AlertManager newAlert={alert} />
       <main className="bg-[#ffffff] pb-20">
-        <div className="sm:text-xl md:text-3xl lg:text-4xl xl:text-5xl flex flex-col items-center justify-center p-10 lg:p-52 md:space-y-10 text-center">
-          <h1>ซื้อ - ขาย แลกเปลี่ยน อุปกรณ์การเรียน</h1>
-          <h1>มหาวิทยาลัยเทคโนโลยีราชมงคลล้านนา</h1>
+        <div className="relative max-h-96 overflow-hidden mb-16">
+          <img src="cover1.png" alt="" className="w-full" />
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-60">
+            <div className="w-full sm:text-xl md:text-3xl lg:text-4xl xl:text-5xl flex flex-col items-center justify-center p-10 lg:p-52 md:space-y-10 text-center text-white">
+              <h1>ซื้อ - ขาย แลกเปลี่ยน อุปกรณ์การเรียน</h1>
+              <h1>มหาวิทยาลัยเทคโนโลยีราชมงคลล้านนา</h1>
+            </div>
+          </div>
         </div>
+
         <div className="px-10 lg:px-32 lg:flex justify-between mb-10 text-sm lg:text-base">
           {/* แสดง Select บนหน้าจอขนาดเล็ก */}
           <div className="mb-2 lg:mb-0 md:hidden">
